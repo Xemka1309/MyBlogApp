@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyBlogApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using MyBlogApp.Data;
+using MyBlogApp.DAL;
+using MyBlogApp.DAL.Entity;
 
 namespace MyBlogApp.Controllers
 {

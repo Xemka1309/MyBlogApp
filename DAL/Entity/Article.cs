@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MyBlogApp.Models
+namespace MyBlogApp.DAL.Entity
 {
     public class Article
     {
@@ -11,5 +8,6 @@ namespace MyBlogApp.Models
         public String Title { get; set; }
         public String Description { get; set; }
         public String Content { get; set; }
+        public Tag[] Tags { get; set; }
     }
 }

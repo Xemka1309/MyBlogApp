@@ -1,0 +1,11 @@
+.btn-add-category{
+    width: 150px;
+    height: 50px;
+    color:white;
+}
+.category-constructor-container{
+    background-color: lightskyblue;
+    font-size: 20px;
+    width: 25%;
+    padding: 30px;
+}

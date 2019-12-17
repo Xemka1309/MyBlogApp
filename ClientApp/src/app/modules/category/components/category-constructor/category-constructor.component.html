@@ -1,0 +1,42 @@
+<h2>This is category constructor</h2>
+
+<p *ngIf="!categories"><em>Loading...</em></p>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="categories">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Description</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let element of this.categories">
+        <td>{{element.id}}</td>
+        <td>{{element.description}}</td>
+        <td>{{element.value}}</td>
+        <td>test</td>
+      </tr>
+    </tbody>
+</table>
+
+<div class="category-constructor-container">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input required formControlName="val" width="50px" matInput placeholder="Category name">
+    </mat-form-field>
+    <div *ngIf="val?.errors.required">
+      <span class="display4">Value is required.</span>
+    </div>
+    <br/>
+    <mat-form-field>
+      <input formControlName="id" width="50px" matInput placeholder="Category id">
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+        <input formControlName="descr" width="50px" matInput placeholder="Category description">
+    </mat-form-field>
+    <br/>
+    <button class="btn btn-primary btn-add-category" type="submit" [(value)]="buttonText" (click)="addCategory()">Add category</button>
+  </form>
+  
+</div>

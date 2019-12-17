@@ -11,6 +11,9 @@ using MyBlogApp.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyBlogApp.DAL;
+using MyBlogApp.DAL.DAOInterfaces;
+using MyBlogApp.DAL.EFImpl;
 
 namespace MyBlogApp
 {
@@ -35,6 +38,9 @@ namespace MyBlogApp
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+            services.AddSingleton<ICategoryRepo, CategoryDAOEF>();
+            services.AddSingleton<DAOFactory>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
