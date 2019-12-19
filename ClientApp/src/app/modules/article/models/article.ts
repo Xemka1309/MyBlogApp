@@ -3,4 +3,6 @@ export class Article {
     title:String;
     description:String;
     content:String;
+    category:String;
+    tags:String[];
 }

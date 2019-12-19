@@ -1,0 +1,43 @@
+<h2>This is article constructor</h2>
+
+<p *ngIf="!categories"><em>Loading...</em></p>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="categories">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Description</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let element of this.categories">
+        <td>{{element.id}}</td>
+        <td>{{element.description}}</td>
+        <td>{{element.value}}</td>
+        <td>test</td>
+      </tr>
+    </tbody>
+</table>
+
+<div class="article-constructor-container">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input required formControlName="title" width="50px" matInput placeholder="Article Title">
+    </mat-form-field>
+    <mat-form-field>
+        <input required formControlName="descr" width="50px" matInput placeholder="Article description">
+    </mat-form-field>
+    <div *ngIf="Title?.errors.required">
+      <span class="display4">Value is required.</span>
+    </div>
+    <br/>
+    <mat-form-field>
+      <input formControlName="content" width="50px" matInput placeholder="Article Content">
+    </mat-form-field>
+    <br/>
+    
+    <br/>
+    <button class="btn btn-primary btn-add-category" type="submit" [(value)]="buttonText" (click)="addArticle()">Add category</button>
+  </form>
+  
+</div>

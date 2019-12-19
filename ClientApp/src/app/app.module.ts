@@ -18,6 +18,9 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoryConstructorComponent } from './modules/category/components/category-constructor/category-constructor.component';
+import { ArticleItem } from './modules/article/components/article-item/article-item.component';
+import { ArticleModule } from './modules/article/article.module';
+import { ArticleListComponent } from './modules/article/components/article-list/article-list.component';
 
 
 @NgModule({
@@ -35,6 +38,7 @@ import { CategoryConstructorComponent } from './modules/category/components/cate
     FormsModule,
     ApiAuthorizationModule,
     CategoryModule,
+    ArticleModule,
     MatSliderModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -42,6 +46,7 @@ import { CategoryConstructorComponent } from './modules/category/components/cate
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'test', component:TestComponent, canActivate: [AuthorizeGuard]},
       { path: 'category', component: CategoryConstructorComponent},
+      { path: 'article-item', component:ArticleListComponent }
       
     ]),
     BrowserAnimationsModule

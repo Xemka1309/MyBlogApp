@@ -14,6 +14,8 @@ using Microsoft.Extensions.Hosting;
 using MyBlogApp.DAL;
 using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.EFImpl;
+using MyBlogApp.BLL.Interfaces;
+using MyBlogApp.BLL.ServiceImpl;
 
 namespace MyBlogApp
 {
@@ -39,8 +41,11 @@ namespace MyBlogApp
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddSingleton<ICategoryRepo, CategoryDAOEF>();
-            services.AddSingleton<DAOFactory>();
+            services.AddScoped<ICategoryRepo, CategoryDAOEF>();
+            services.AddScoped<IArticleRepo, ArticleDAOEF>();
+            services.AddScoped<DAOFactory>();
+
+            services.AddScoped<IArticleService, ArticleService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

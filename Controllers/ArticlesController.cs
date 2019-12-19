@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using MyBlogApp.Data;
 using MyBlogApp.DAL;
 using MyBlogApp.DAL.Entity;
+using MyBlogApp.BLL.Interfaces;
 
 namespace MyBlogApp.Controllers
 {
@@ -17,38 +18,26 @@ namespace MyBlogApp.Controllers
     [ApiController]
     public class ArticlesController : ControllerBase
     {
-        private ApplicationDbContext dbContext;
-        public ArticlesController(ApplicationDbContext dbContext)
+        private IArticleService articleService; 
+        public ArticlesController(IArticleService articleService)
         {
-            this.dbContext = dbContext;
+            this.articleService = articleService;
         }
 
         [HttpPost]
-        public String Post([FromBody]Article article)
+        public ActionResult Post([FromBody]Article article)
         {
-            dbContext.Articles.Add(article);
-            return "Add article with title" + article.Title + " OK";
+            if (article == null)
+                return BadRequest("invalid article object");
+            articleService.AddArticle(article);
+            return Ok(article);
         }
             
 
         [HttpGet]
         public IEnumerable<Article> Get()
         {
-            List<Article> articles = new List<Article>();
-            articles.Add(new Article() {
-                Title = "Article Title number one",
-                Content = "Content from article number one",
-                Id = 1,
-                Description = "Description from 1"
-            });
-            articles.Add(new Article()
-            {
-                Title = "Article Title number two",
-                Content = "Content from article number two",
-                Id = 2,
-                Description = "Description from 2"
-            });
-            return articles.ToArray();
+            return articleService.GetArticles();
         }
     }
 }

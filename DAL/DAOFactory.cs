@@ -12,10 +12,12 @@ namespace MyBlogApp.DAL
         private ICategoryRepo categoryRepo;
         private IArticleRepo articleRepo;
         private ITagRepo tagRepo;
-        public DAOFactory(ApplicationDbContext applicationDbContext, ICategoryRepo categoryRepo)
+        public DAOFactory(ApplicationDbContext applicationDbContext, ICategoryRepo categoryRepo, IArticleRepo articleRepo)
         {
             this.dbContext = applicationDbContext;
             this.categoryRepo = categoryRepo;
+            
+            this.articleRepo = articleRepo;
         }
         public ICategoryRepo GetCategoryRepo()
         {

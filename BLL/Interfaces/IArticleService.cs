@@ -11,6 +11,7 @@ namespace MyBlogApp.BLL.Interfaces
         public Article GetArticle(int id);
         public void RemoveArticle(int id);
         public void RemoveArticle(Article article);
+        public void AddArticle(Article article);
         
     }
 }

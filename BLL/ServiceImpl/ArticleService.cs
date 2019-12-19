@@ -3,8 +3,8 @@ using MyBlogApp.DAL.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MyBlogApp.DAL;
+using MyBlogApp.BLL.Exceptions;
 namespace MyBlogApp.BLL.ServiceImpl
 {
     public class ArticleService : IArticleService
@@ -14,6 +14,14 @@ namespace MyBlogApp.BLL.ServiceImpl
         {
             this.daoFactory = daoFactory;
         }
+
+        public void AddArticle(Article article)
+        {
+            if (article == null)
+                throw new ServiceNullArgumentException("article argument was null");
+            daoFactory.GetArticleRepo().AddArticle(article);
+        }
+
         public Article GetArticle(int id)
         {
             throw new NotImplementedException();
