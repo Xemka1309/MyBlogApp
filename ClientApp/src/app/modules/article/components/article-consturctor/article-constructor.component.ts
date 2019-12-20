@@ -52,12 +52,16 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
         console.log("create article");
         console.log(formValue.controls.categoryId.value);
         let article:Article = new Article();
-        article.categoryId = formValue.controls.categoryId.value;
+        let category = this.categories.find(x => x.id === formValue.controls.categoryId.value);
+        article.category = category; 
+        console.log(category.name);
         article.content = formValue.controls.content.value;
         article.title = formValue.controls.title.value;
         article.description = formValue.controls.description.value;
+        article.picsUrl = "articles/" + article.title;
         article.id = 0;
-        this.articleSerice.addArticle(article);
+        article.tags = null;
+        this.articleSerice.addArticle(article).subscribe();
         this.clearForm();
         
     }

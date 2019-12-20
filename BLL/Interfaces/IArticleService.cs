@@ -7,7 +7,7 @@ namespace MyBlogApp.BLL.Interfaces
 {
     public interface IArticleService
     {
-        public Article[] GetArticles();
+        public IEnumerable<Article> GetArticles();
         public Article GetArticle(int id);
         public void RemoveArticle(int id);
         public void RemoveArticle(Article article);

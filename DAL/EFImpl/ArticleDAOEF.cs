@@ -1,4 +1,5 @@
-﻿using MyBlogApp.BLL.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.Entity;
 using MyBlogApp.DAL.Exceptions;
@@ -21,13 +22,20 @@ namespace MyBlogApp.DAL.EFImpl
         {
             if (article == null)
                 throw new NullArgumentDALException("article argument was null");
+            if (article.Tags == null)
+                article.Tags = new List<Tag>();
+            if (article.PublishTime == null)
+                article.PublishTime = DateTime.Now;
             
             dbContext.Articles.Add(article);
+            dbContext.Attach<Category>(article.Category);
+            dbContext.SaveChanges();
         }
 
         public void EditArticle(Article oldArticle, Article newArticle)
         {
             throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
 
         public void GetArticle(int id)
@@ -35,19 +43,24 @@ namespace MyBlogApp.DAL.EFImpl
             throw new NotImplementedException();
         }
 
-        public Article[] GetArticles()
+        public IEnumerable<Article> GetArticles()
         {
-            return dbContext.Articles.ToArray();
+            var result = dbContext.Articles
+                .Include(article => article.Category)
+                .Include(article => article.Tags);
+            return result;
         }
 
         public void RemoveArticle(Article article)
         {
             throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
 
         public void RemoveArticle(int id)
         {
             throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
     }
 }

@@ -5,7 +5,8 @@ export class Article {
     title:String;
     description:String;
     content:String;
-    categoryId:number;
-    category:String;
+    category:Category;
     picsUrl:String;
+    publishTime:Date;
+    tags:Tag[];
 }

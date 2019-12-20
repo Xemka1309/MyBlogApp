@@ -1,0 +1,9 @@
+.article-card{
+    margin-top: 50px;
+}
+mat-card-title{
+    font-size: 25px;
+}
+mat-card-subtitle{
+    font-size: 20px;
+}

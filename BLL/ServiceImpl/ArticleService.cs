@@ -27,7 +27,7 @@ namespace MyBlogApp.BLL.ServiceImpl
             throw new NotImplementedException();
         }
 
-        public Article[] GetArticles()
+        public IEnumerable<Article> GetArticles()
         {
             return daoFactory.GetArticleRepo().GetArticles();
         }

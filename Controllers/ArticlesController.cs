@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBlogApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using MyBlogApp.Data;
 using MyBlogApp.DAL;
 using MyBlogApp.DAL.Entity;
 using MyBlogApp.BLL.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace MyBlogApp.Controllers
 {
@@ -17,9 +17,11 @@ namespace MyBlogApp.Controllers
     [ApiController]
     public class ArticlesController : ControllerBase
     {
+        private ILogger<ArticlesController> logger;
         private IArticleService articleService; 
-        public ArticlesController(IArticleService articleService)
+        public ArticlesController(IArticleService articleService, ILogger<ArticlesController> logger)
         {
+            this.logger = logger;
             this.articleService = articleService;
         }
 
@@ -27,9 +29,14 @@ namespace MyBlogApp.Controllers
         [HttpPost]
         public ActionResult Post([FromBody]Article article)
         {
+            logger.LogInformation("Accept POST Article");
             if (article == null)
+            {
+                logger.LogError("Null article accepted from POST");
                 return BadRequest("invalid article object");
+            }
             articleService.AddArticle(article);
+            logger.LogInformation("Article was added from POST method");
             return Ok(article);
         }
             
@@ -37,7 +44,8 @@ namespace MyBlogApp.Controllers
         [HttpGet]
         public IEnumerable<Article> Get()
         {
-            return articleService.GetArticles();
+            var result =  articleService.GetArticles();
+            return result;
         }
     }
 }

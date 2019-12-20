@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-
-namespace MyBlogApp.DAL.Entity
+using System.Linq;
+using System.Threading.Tasks;
+using MyBlogApp.DAL.Entity;
+namespace MyBlogApp.DAL.DTO
 {
-    public class Article
+    public class ArticleDTO
     {
         public int Id { get; set; }
-        public DateTime PublishTime { get; set; }
         public String Title { get; set; }
         public String Description { get; set; }
         public String PicsUrl { get; set; }
         public String Content { get; set; }
         public List<Tag> Tags { get; set; }
-        
-        public Category Category { get; set; }
+        public int CategoryId { get; set; }
     }
 }

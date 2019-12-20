@@ -24,6 +24,7 @@ namespace MyBlogApp.DAL.EFImpl
         public void EditCategory(Category oldCategory, Category newCategory)
         {
             throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
 
         public Category[] GetCategories()
@@ -42,11 +43,13 @@ namespace MyBlogApp.DAL.EFImpl
         public void RemoveCategory(int id)
         {
             throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
 
         public void RemoveCategory(Category category)
         {
             throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MyBlogApp.DAL
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
     }
 }
