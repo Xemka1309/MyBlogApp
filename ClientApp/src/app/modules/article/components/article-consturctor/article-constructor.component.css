@@ -1,0 +1,31 @@
+
+mat-card{
+    
+    text-align: center;
+}
+input,materror{
+    font-size: 20px;
+}
+form{
+    width: 100%;
+}
+.example-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 25px;
+  }
+  
+  .example-container > * {
+    width: 100%;
+}
+button{
+    font-size: 25px;
+    height: 50px;
+    width: 200px;
+}
+.article-title{
+    font-weight: bold;
+}
+input::placeholder{
+    font-weight: bold;
+}

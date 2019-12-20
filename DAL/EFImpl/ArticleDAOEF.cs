@@ -16,10 +16,12 @@ namespace MyBlogApp.DAL.EFImpl
         {
             this.dbContext = dbContext;
         }
+        // Todo: rewrite to use DTO 
         public void AddArticle(Article article)
         {
             if (article == null)
                 throw new NullArgumentDALException("article argument was null");
+            
             dbContext.Articles.Add(article);
         }
 

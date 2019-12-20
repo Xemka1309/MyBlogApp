@@ -13,13 +13,6 @@ export class ArticleListComponent implements OnInit{
     articles:Article[];    
     constructor(private articleListService:ArticleListService, private articleService:ArticleService) 
     {
-        this.articles = [];
-        let article = new Article();
-        article.content = 'Content';
-        article.description = 'Description';
-        article.title = 'Title of the article';
-        article.category = 'Article category';
-        this.articles.push(article); 
 
     }
     ngOnInit(): void 

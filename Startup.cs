@@ -46,6 +46,7 @@ namespace MyBlogApp
             services.AddScoped<DAOFactory>();
 
             services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

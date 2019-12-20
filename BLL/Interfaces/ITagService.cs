@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBlogApp.BLL.Interfaces
 {
-    interface ITagService
+    public interface ITagService
     {
         Tag[] GetTags();
         Tag GetTag(int id);

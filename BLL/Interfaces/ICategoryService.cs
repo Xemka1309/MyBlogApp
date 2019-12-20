@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBlogApp.BLL.Interfaces
 {
-    interface ICategoryService
+    public interface ICategoryService
     {
         Category[] GetCategories();
         Category GetCategory(int id);

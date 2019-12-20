@@ -1,7 +1,8 @@
 <h2>This is category constructor</h2>
 
 <p *ngIf="!categories"><em>Loading...</em></p>
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="categories">
+<div *ngIf="categories">
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="categories">
     <thead>
       <tr>
         <th>Id</th>
@@ -10,23 +11,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let element of this.categories">
+      <tr *ngFor="let element of categories">
         <td>{{element.id}}</td>
         <td>{{element.description}}</td>
-        <td>{{element.value}}</td>
+        <td>{{element.name}}</td>
         <td>test</td>
       </tr>
     </tbody>
 </table>
+</div>
+
 
 <div class="category-constructor-container">
   <form [formGroup]="form">
     <mat-form-field>
       <input required formControlName="val" width="50px" matInput placeholder="Category name">
     </mat-form-field>
-    <div *ngIf="val?.errors.required">
-      <span class="display4">Value is required.</span>
-    </div>
     <br/>
     <mat-form-field>
       <input formControlName="id" width="50px" matInput placeholder="Category id">

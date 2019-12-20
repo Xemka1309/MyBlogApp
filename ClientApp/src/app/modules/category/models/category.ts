@@ -1,10 +1,10 @@
 
 export class Category{
     id: number;
-    value: String;
+    name: String;
     description: String;
     constructor(){
-        this.value = '';
+        this.name = '';
         this.description = '';
     }
 }

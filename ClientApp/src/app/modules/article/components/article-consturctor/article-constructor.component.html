@@ -1,43 +1,43 @@
-<h2>This is article constructor</h2>
 
-<p *ngIf="!categories"><em>Loading...</em></p>
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="categories">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Description</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let element of this.categories">
-        <td>{{element.id}}</td>
-        <td>{{element.description}}</td>
-        <td>{{element.value}}</td>
-        <td>test</td>
-      </tr>
-    </tbody>
-</table>
+  <mat-card>
+      <mat-card-title class="display-4">Create a new article</mat-card-title>
+      <form [formGroup]="articleForm" autocomplete="off" novalidate  >
+          <mat-card-content>
+            <div class="example-container">
+            <mat-form-field >
+              <input class="article-title" required matInput type="text" placeholder="Article title" formControlName="title" id="title">
+              <mat-hint >Not more then 60 characters long.</mat-hint>
+              <mat-error *ngIf="hasError('title', 'required')">Title is required</mat-error>
+              <mat-error *ngIf="hasError('title', 'maxlength')">You have more than 60 characters</mat-error>
+            </mat-form-field>
+            <br/>
+            <mat-form-field>
+              <input  required matInput type="text" placeholder="Article description" formControlName="description">
+              <mat-hint >Not more then 100 characters long.</mat-hint>
+              <mat-error *ngIf="hasError('description', 'required')">Description is required</mat-error>
+              <mat-error *ngIf="hasError('description', 'maxlength')">You have more than 100 characters</mat-error>
+            </mat-form-field>
+            <br/>
+            <mat-form-field>
+              <textarea required formControlName = "content" matInput placeholder="Article content"></textarea>
+              <mat-error *ngIf="hasError('content', 'required')">Content is required</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select required placeholder="Select Category" formControlName="categoryId">
+                <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.id">
+                  {{categoryItem.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasError('categoryId', 'required')">You must select category for you article</mat-error>
+            </mat-form-field>
+            </div>
+          </mat-card-content>
 
-<div class="article-constructor-container">
-  <form [formGroup]="form">
-    <mat-form-field>
-      <input required formControlName="title" width="50px" matInput placeholder="Article Title">
-    </mat-form-field>
-    <mat-form-field>
-        <input required formControlName="descr" width="50px" matInput placeholder="Article description">
-    </mat-form-field>
-    <div *ngIf="Title?.errors.required">
-      <span class="display4">Value is required.</span>
-    </div>
-    <br/>
-    <mat-form-field>
-      <input formControlName="content" width="50px" matInput placeholder="Article Content">
-    </mat-form-field>
-    <br/>
-    
-    <br/>
-    <button class="btn btn-primary btn-add-category" type="submit" [(value)]="buttonText" (click)="addArticle()">Add category</button>
-  </form>
-  
-</div>
+          <mat-card-actions>
+            <mat-card-actions>
+              <button type="button" (click)="createArticle(articleForm)" mat-raised-button color="primary" [disabled]="!articleForm.valid">Create</button>
+              <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+            </mat-card-actions>
+          </mat-card-actions>
+        </form>
+    </mat-card>

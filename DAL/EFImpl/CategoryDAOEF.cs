@@ -18,6 +18,7 @@ namespace MyBlogApp.DAL.EFImpl
                 throw new NullArgumentDALException("Category was null");
 
             dbContext.Categories.Add(category);
+            dbContext.SaveChanges();
         }
 
         public void EditCategory(Category oldCategory, Category newCategory)

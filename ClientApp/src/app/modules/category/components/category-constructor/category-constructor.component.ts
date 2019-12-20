@@ -16,9 +16,13 @@ export class CategoryConstructorComponent implements OnInit, AfterContentInit {
     {
 
     }
+    loadCategories(){
+        this.categoryService.getCategories().subscribe( (result:Category[]) =>{
+            this.categories = result;
+        } ), error => console.log(error);
+    }
     ngOnInit(): void 
     {
-        this.categories = this.categoryService.getCategories();
         console.log(this.categories);
         this.form = new FormGroup({
             val: new FormControl(),
@@ -40,8 +44,8 @@ export class CategoryConstructorComponent implements OnInit, AfterContentInit {
         let category: Category = new Category();
         category.id = this.form.value.id;
         category.description = this.form.value.descr;
-        category.value = this.form.value.val;
+        category.name = this.form.value.val;
         this.categoryService.addCategory(category);
-        this.categories = this.categoryService.getCategories();
+        this.loadCategories();
     }
 }

@@ -13,7 +13,6 @@ using MyBlogApp.BLL.Interfaces;
 
 namespace MyBlogApp.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ArticlesController : ControllerBase
@@ -24,6 +23,7 @@ namespace MyBlogApp.Controllers
             this.articleService = articleService;
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Post([FromBody]Article article)
         {
