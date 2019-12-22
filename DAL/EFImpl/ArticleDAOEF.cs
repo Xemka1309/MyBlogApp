@@ -42,13 +42,18 @@ namespace MyBlogApp.DAL.EFImpl
         {
             throw new NotImplementedException();
         }
-
-        public IEnumerable<Article> GetArticles()
+        public IEnumerable<Article> GetArticlesFiltered(String filterStr)
         {
-            var result = dbContext.Articles
-                .Include(article => article.Category)
-                .Include(article => article.Tags);
-            return result;
+
+            return null;
+        }
+
+
+        public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
+        {
+            return PagedList<Article>.ToPagedList(dbContext.Articles.Include(a => a.Category).Include(a => a.Tags),
+                parameters.PageNumber,
+                parameters.PageSize);
         }
 
         public void RemoveArticle(Article article)

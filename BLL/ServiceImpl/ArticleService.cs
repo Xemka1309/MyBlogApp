@@ -27,9 +27,10 @@ namespace MyBlogApp.BLL.ServiceImpl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Article> GetArticles()
-        {
-            return daoFactory.GetArticleRepo().GetArticles();
+        public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
+        {   if (parameters == null)
+                throw new ServiceNullArgumentException("articlequeryparams was null");
+            return daoFactory.GetArticleRepo().GetArticles(parameters);
         }
 
         public void RemoveArticle(int id)
@@ -40,6 +41,12 @@ namespace MyBlogApp.BLL.ServiceImpl
         public void RemoveArticle(Article article)
         {
             throw new NotImplementedException();
+        }
+        public IEnumerable<Article> GetArticlesFiltered(String filterStr)
+        {
+            if (filterStr == null)
+                throw new ServiceNullArgumentException("filterstring was null");
+            return daoFactory.GetArticleRepo().GetArticlesFiltered(filterStr);
         }
     }
 }

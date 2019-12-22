@@ -10,10 +10,11 @@ using MyBlogApp.DAL;
 using MyBlogApp.DAL.Entity;
 using MyBlogApp.BLL.Interfaces;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MyBlogApp.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ArticlesController : ControllerBase
     {
@@ -40,12 +41,34 @@ namespace MyBlogApp.Controllers
             return Ok(article);
         }
             
+        [HttpGet]
+        [Route("{filterStr}")]
+        public IActionResult GetFiltered(String filterStr, String abc)
+        {
+            if (filterStr == null || filterStr.Length < 1)
+                return BadRequest("Invalid param filterString");
+            return Ok(articleService.GetArticlesFiltered(filterStr));
+        }
 
         [HttpGet]
-        public IEnumerable<Article> Get()
+        public IActionResult GetArticles([FromQuery] ArticleQueryParameters articleParameters)
         {
-            var result =  articleService.GetArticles();
-            return result;
+            var articles = articleService.GetArticles(articleParameters);
+            var metadata = new
+            {
+                articles.TotalCount,
+                articles.PageSize,
+                articles.CurrentPage,
+                articles.TotalPages,
+                articles.HasNext,
+                articles.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            logger.LogInformation($"Returned {articles.TotalCount} owners from database.");
+
+            return Ok(articles);
         }
     }
 }
