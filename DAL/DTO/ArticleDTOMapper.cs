@@ -16,7 +16,7 @@ namespace MyBlogApp.DAL.DTO
             articleDTO.Title = article.Title;
             articleDTO.Content = article.Content;
             articleDTO.Description = article.Description;
-            articleDTO.Tags = article.Tags;
+            //articleDTO.Tags = article.Tags;
             articleDTO.CategoryId = article.Category.Id;
 
             return articleDTO;

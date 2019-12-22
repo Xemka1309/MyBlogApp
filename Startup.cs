@@ -42,10 +42,12 @@ namespace MyBlogApp
 
             services.AddScoped<ICategoryRepo, CategoryDAOEF>();
             services.AddScoped<IArticleRepo, ArticleDAOEF>();
+            services.AddScoped<ITagRepo, TagDAOEF>();
             services.AddScoped<DAOFactory>();
 
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ITagService, TagService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

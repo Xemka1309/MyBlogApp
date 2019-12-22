@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { CategoryModule } from './modules/category/category-constructor.module';
 import { MatSliderModule } from '@angular/material/slider';
 
-
 import { AppComponent } from './app.component';
 import { TestComponent } from './testcomponent/testcomponent';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -18,6 +17,8 @@ import { CategoryConstructorComponent } from './modules/category/components/cate
 import { ArticleModule } from './modules/article/article.module';
 import { ArticleListComponent } from './modules/article/components/article-list/article-list.component';
 import { ArticleConstructorComponent } from './modules/article/components/article-consturctor/article-constructor.component';
+import { TagModule } from './modules/tag/tag.module';
+import { TagConstructorComponent } from './modules/tag/components/tag-constructor-component/tag-constructor.component';
 
 
 @NgModule({
@@ -34,14 +35,14 @@ import { ArticleConstructorComponent } from './modules/article/components/articl
     CategoryModule,
     ArticleModule,
     MatSliderModule,
+    TagModule,
     RouterModule.forRoot([
       { path: '', component: ArticleListComponent, pathMatch: 'full' },
       { path: 'test', component:TestComponent, canActivate: [AuthorizeGuard]},
       { path: 'category', component: CategoryConstructorComponent},
       { path: 'article-item', component:ArticleListComponent },
-      { path: 'article-constructor', component:ArticleConstructorComponent}
-
-      
+      { path: 'article-constructor', component:ArticleConstructorComponent},
+      { path: 'tag-constructor', component:TagConstructorComponent }
     ]),
     BrowserAnimationsModule
   ],

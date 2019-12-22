@@ -5,6 +5,8 @@ import { ArticleService } from 'src/app/services/article-service';
 import { Article } from '../../models/article';
 import { ArticlePageParams } from '../../models/article-page-params';
 import { Router } from '@angular/router';
+import { CategoryService } from 'src/app/services/category-service';
+import { Category } from 'src/app/modules/category/models/category';
 
 @Component({
     selector: 'article-list',
@@ -12,9 +14,11 @@ import { Router } from '@angular/router';
     styleUrls: ['./article-list.component.css']
 })
 export class ArticleListComponent implements OnInit{
+    filterForm:FormGroup;
     articles:Article[];  
     articleParams:ArticlePageParams;  
-    constructor(private articleListService:ArticleListService, private articleService:ArticleService, private router: Router) 
+    categories:Category[];
+    constructor(private categoryService:CategoryService,private articleService:ArticleService, private router: Router) 
     {
         this.articleParams = new ArticlePageParams();
         this.articleParams.pageSize = 5;
@@ -22,6 +26,14 @@ export class ArticleListComponent implements OnInit{
     }
     ngOnInit(): void 
     {
+        this.categoryService.getCategories().subscribe( (result:Category[]) =>{
+            this.categories = result;
+        }),error => console.log(error);
+        this.filterForm = new FormGroup({
+            categoryId:new FormControl(),
+            startDate:new FormControl(),
+            endDate:new FormControl(),
+           });
         this.articleParams.pageNumber = 1;
         this.articleService.getArticlesFiltered(this.articleParams).subscribe((result:Article[]) =>{
             this.articles = result;
@@ -48,6 +60,7 @@ export class ArticleListComponent implements OnInit{
         this.getPageArticles();
         window.scrollTo(0,0);
     }
+    
 
     
 }

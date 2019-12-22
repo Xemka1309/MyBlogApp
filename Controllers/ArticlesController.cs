@@ -54,6 +54,8 @@ namespace MyBlogApp.Controllers
         public IActionResult GetArticles([FromQuery] ArticleQueryParameters articleParameters)
         {
             var articles = articleService.GetArticles(articleParameters);
+            if (articles == null)
+                return Ok(new List<Article>());
             var metadata = new
             {
                 articles.TotalCount,
@@ -68,7 +70,7 @@ namespace MyBlogApp.Controllers
 
             logger.LogInformation($"Returned {articles.TotalCount} owners from database.");
 
-            return Ok(articles);
+            return Ok(JsonConvert.SerializeObject(articles));
         }
     }
 }

@@ -24,4 +24,7 @@ export class ArticleService {
         console.log(query);
         return this.http.get<Article[]>(query);
     }
+    public AddTagsToArticle(article){
+
+    }
 }

@@ -1,0 +1,22 @@
+
+  <mat-card>
+    <mat-card-title class="display-4">Create a new tag</mat-card-title>
+    <form [formGroup]="tagForm" autocomplete="off" novalidate  >
+        <mat-card-content>
+          <div class="example-container">
+          <mat-form-field >
+            <input class="tag-value" required matInput type="text" placeholder="Tag value" formControlName="value" id="value">
+            <mat-hint >Not more then 60 characters long.</mat-hint>
+            <mat-error *ngIf="hasError('value', 'required')">Title is required</mat-error>
+            <mat-error *ngIf="hasError('value', 'maxlength')">You have more than 60 characters</mat-error>
+          </mat-form-field>
+          <br/>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button type="button" (click)="addTag(tagForm)" mat-raised-button color="primary" [disabled]="!tagForm.valid">Create</button>
+            <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+        </mat-card-actions>
+      </form>
+</mat-card>

@@ -10,8 +10,14 @@ import { Article } from '../../models/article';
   styleUrls: ['article-item.component.css'],
 })
 export class ArticleItem implements OnInit {
-    @Input() article:Article;
+    @Input() 
+    public article:Article;
+    constructor(){
+      
+    }
     ngOnInit(): void {
+      //this.article = Article.cloneBase(this.articleIn);
+      console.log(this.article);
     
   }
   

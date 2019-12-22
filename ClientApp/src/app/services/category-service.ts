@@ -14,14 +14,14 @@ export class CategoryService {
     addCategory(category:Category){
         let categoryX= {
             Id:0,
-            Name:category.name,
-            Description:category.description
+            Name:category.Name,
+            Description:category.Description
         };
         this.http.post(this.base + "category/", categoryX).subscribe();
 
     }
     removeCategory(category:Category){
-        this.categories.splice(this.categories.findIndex(x => x.id === category.id),1);
+        this.categories.splice(this.categories.findIndex(x => x.Id === category.Id),1);
 
     }
     getCategories()

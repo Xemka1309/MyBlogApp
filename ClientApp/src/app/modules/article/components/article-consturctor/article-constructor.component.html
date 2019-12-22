@@ -24,20 +24,36 @@
             </mat-form-field>
             <mat-form-field>
               <mat-select required placeholder="Select Category" formControlName="categoryId">
-                <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.id">
-                  {{categoryItem.name}}
+                <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.Id">
+                  {{categoryItem.Name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="hasError('categoryId', 'required')">You must select category for you article</mat-error>
             </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Select Tag/s" formControlName="tagId">
+                <mat-option *ngFor="let tagItem of tags"  [value]="tagItem.Id">
+                  {{tagItem.Value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div>  
+              <span class="display-5">Selected tags:</span>
+              <span *ngFor="let atag of articleTags">
+                {{atag.Value}},
+              </span>
             </div>
+
+          </div>
           </mat-card-content>
 
           <mat-card-actions>
-            <mat-card-actions>
+              <button type = "button" (click)="addTag(articleForm)" mat-raised-button color="primary">Add tag</button>
+              <button type="button" mat-raised-button color="warn" (click)="removeTag(articleForm)">Remove tag</button>
+              <br/><br/><br/>
               <button type="button" (click)="createArticle(articleForm)" mat-raised-button color="primary" [disabled]="!articleForm.valid">Create</button>
-              <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
-            </mat-card-actions>
+              <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
           </mat-card-actions>
         </form>
-    </mat-card>
+  </mat-card>

@@ -1,4 +1,18 @@
 <h2><a name = "#top">Latest Articles</a></h2>
+<div class="filter-bar">
+    <h3>Filter bar</h3>
+    <form [formGroup]="filterForm" autocomplete="off" novalidate  >
+        <mat-form-field>
+            <mat-select placeholder="Select Category" formControlName="categoryId">
+              <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.Id">
+                {{categoryItem.Name}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+    
+      
+</div>
 <div *ngFor="let item of articles; let i=index" class="article-container">
     <article-item [article] = "item"  ></article-item>
 </div>

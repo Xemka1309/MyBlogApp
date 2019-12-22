@@ -8,7 +8,7 @@ namespace MyBlogApp.BLL.Interfaces
 {
     public interface ITagService
     {
-        Tag[] GetTags();
+        IEnumerable<Tag> GetTags();
         Tag GetTag(int id);
         void AddTag(Tag tag);
         void RemoveTag(Tag tag);

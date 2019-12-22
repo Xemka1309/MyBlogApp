@@ -11,8 +11,7 @@ namespace MyBlogApp.DAL.Entity
         public String Description { get; set; }
         public String PicsUrl { get; set; }
         public String Content { get; set; }
-        public List<Tag> Tags { get; set; }
-        
+        public List<ArticleTag> ArticleTags { get; set; }
         public Category Category { get; set; }
     }
 }

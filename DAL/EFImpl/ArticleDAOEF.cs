@@ -22,8 +22,12 @@ namespace MyBlogApp.DAL.EFImpl
         {
             if (article == null)
                 throw new NullArgumentDALException("article argument was null");
-            if (article.Tags == null)
-                article.Tags = new List<Tag>();
+            if (article.ArticleTags != null)
+            {
+                
+            }
+            if (article.ArticleTags == null)
+                article.ArticleTags = new List<ArticleTag>();
             if (article.PublishTime == null)
                 article.PublishTime = DateTime.Now;
             
@@ -51,7 +55,7 @@ namespace MyBlogApp.DAL.EFImpl
 
         public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
         {
-            return PagedList<Article>.ToPagedList(dbContext.Articles.Include(a => a.Category).Include(a => a.Tags),
+            return PagedList<Article>.ToPagedList(dbContext.Articles.Include(a => a.Category).Include(a => a.ArticleTags),
                 parameters.PageNumber,
                 parameters.PageSize);
         }

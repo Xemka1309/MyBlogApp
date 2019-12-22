@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlogApp.DAL;
 
-namespace MyBlogApp.Migrations
+namespace MyBlogApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191220175946_MigrationAddPublishTime")]
-    partial class MigrationAddPublishTime
+    [Migration("20191222190356_MyTables")]
+    partial class MyTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -270,6 +270,21 @@ namespace MyBlogApp.Migrations
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("MyBlogApp.DAL.Entity.ArticleTag", b =>
+                {
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticleId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ArticleTag");
+                });
+
             modelBuilder.Entity("MyBlogApp.DAL.Entity.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -295,15 +310,10 @@ namespace MyBlogApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
 
                     b.ToTable("Tags");
                 });
@@ -431,11 +441,17 @@ namespace MyBlogApp.Migrations
                         .HasForeignKey("CategoryId");
                 });
 
-            modelBuilder.Entity("MyBlogApp.DAL.Entity.Tag", b =>
+            modelBuilder.Entity("MyBlogApp.DAL.Entity.ArticleTag", b =>
                 {
                     b.HasOne("MyBlogApp.DAL.Entity.Article", "Article")
-                        .WithMany("Tags")
+                        .WithMany("ArticleTags")
                         .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyBlogApp.DAL.Entity.Tag", "Tag")
+                        .WithMany("TagArticles")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
