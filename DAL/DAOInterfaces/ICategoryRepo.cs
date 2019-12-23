@@ -8,7 +8,6 @@ namespace MyBlogApp.DAL.DAOInterfaces
         Category GetCategory(int id);
         void AddCategory(Category category);
         void RemoveCategory(int id);
-        void RemoveCategory(Category category);
         void EditCategory(Category oldCategory, Category newCategory);
         
     }

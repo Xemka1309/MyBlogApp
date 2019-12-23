@@ -17,15 +17,10 @@ namespace MyBlogApp.DAL.EFImpl
         {
             this.dbContext = dbContext;
         }
-        // Todo: rewrite to use DTO 
         public void AddArticle(Article article)
         {
             if (article == null)
                 throw new NullArgumentDALException("article argument was null");
-            if (article.ArticleTags != null)
-            {
-                
-            }
             if (article.ArticleTags == null)
                 article.ArticleTags = new List<ArticleTag>();
             if (article.PublishTime == null)
@@ -36,15 +31,23 @@ namespace MyBlogApp.DAL.EFImpl
             dbContext.SaveChanges();
         }
 
-        public void EditArticle(Article oldArticle, Article newArticle)
+        public void EditArticle(int oldArticleId, Article newArticle)
         {
-            throw new NotImplementedException();
+            var article = dbContext.Articles.Where(a => a.Id == oldArticleId).FirstOrDefault();
+            article.Category = newArticle.Category;
+            article.Content = newArticle.Content;
+            article.Description = newArticle.Description;
+            article.ArticleTags = newArticle.ArticleTags;
+            article.Title = newArticle.Title;
+            article.PicsUrl = newArticle.PicsUrl;
+            
+            newArticle.Id = oldArticleId;
             dbContext.SaveChanges();
         }
 
-        public void GetArticle(int id)
+        public Article GetArticle(int id)
         {
-            throw new NotImplementedException();
+            return dbContext.Articles.Where(a => a.Id == id).FirstOrDefault();
         }
         public IEnumerable<Article> GetArticlesFiltered(String filterStr)
         {
@@ -62,14 +65,21 @@ namespace MyBlogApp.DAL.EFImpl
 
         public void RemoveArticle(Article article)
         {
-            throw new NotImplementedException();
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.Articles.Remove(article);
+                dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new DALException("Can't delete article" + ex.Message);
+            }
+            
         }
 
         public void RemoveArticle(int id)
         {
-            throw new NotImplementedException();
-            dbContext.SaveChanges();
+            RemoveArticle(GetArticle(id));
         }
     }
 }

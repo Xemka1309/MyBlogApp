@@ -7,10 +7,9 @@ namespace MyBlogApp.DAL.DAOInterfaces
     {
         PagedList<Article> GetArticles(ArticleQueryParameters parameters);
         void AddArticle(Article article);
-        void RemoveArticle(Article article);
-        void GetArticle(int id);
+        Article GetArticle(int id);
         void RemoveArticle(int id);
-        void EditArticle(Article oldArticle, Article newArticle);
+        void EditArticle(int oldArticleId, Article newArticle);
         IEnumerable<Article> GetArticlesFiltered(String filterStr);
     }
 }

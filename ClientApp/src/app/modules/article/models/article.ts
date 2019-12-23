@@ -9,13 +9,13 @@ export class Article {
     Content:String;
     Category:Category;
     PicsUrl:String;
-    PublishTime:Date;
+    Publish4Time:Date;
     ArticleTags:ArticleTag[];
     constructor(){
         this.ArticleTags = [];
         this.Id = 0;
         this.Title = '';
-        this.PublishTime = null;
+        this.Publish4Time = null;
         this.PicsUrl ='';
         
     }

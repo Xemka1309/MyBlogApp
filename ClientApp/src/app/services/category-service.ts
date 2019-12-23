@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class CategoryService {
-    private base = 'https://localhost:44382/api/';
+    private base = 'https://localhost:44382/api/category';
     private categories:Category[];
     constructor(private http: HttpClient){
         this.categories = [];
@@ -17,7 +17,7 @@ export class CategoryService {
             Name:category.Name,
             Description:category.Description
         };
-        this.http.post(this.base + "category/", categoryX).subscribe();
+        this.http.post(this.base, categoryX).subscribe();
 
     }
     removeCategory(category:Category){
@@ -26,6 +26,6 @@ export class CategoryService {
     }
     getCategories()
     {
-        return this.http.get(this.base + "category");
+        return this.http.get(this.base);
     }
 }

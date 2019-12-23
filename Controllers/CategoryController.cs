@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.Entity;
+using Newtonsoft.Json;
 
 namespace MyBlogApp.Controllers
 {
@@ -24,9 +25,9 @@ namespace MyBlogApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Category> GetCategories()
+        public IActionResult GetCategories()
         {
-            return categoryService.GetCategories();
+            return Ok(JsonConvert.SerializeObject(categoryService.GetCategories()));
         }
 
         

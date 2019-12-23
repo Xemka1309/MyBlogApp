@@ -24,7 +24,7 @@ namespace MyBlogApp.BLL.ServiceImpl
 
         public Article GetArticle(int id)
         {
-            throw new NotImplementedException();
+            return daoFactory.GetArticleRepo().GetArticle(id);
         }
 
         public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
@@ -35,18 +35,33 @@ namespace MyBlogApp.BLL.ServiceImpl
 
         public void RemoveArticle(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                daoFactory.GetArticleRepo().RemoveArticle(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("error with dal layer");
+            }
+            
         }
 
         public void RemoveArticle(Article article)
         {
-            throw new NotImplementedException();
+            if (article == null)
+                return;
+            daoFactory.GetArticleRepo().RemoveArticle(article.Id);
         }
         public IEnumerable<Article> GetArticlesFiltered(String filterStr)
         {
             if (filterStr == null)
                 throw new ServiceNullArgumentException("filterstring was null");
             return daoFactory.GetArticleRepo().GetArticlesFiltered(filterStr);
+        }
+
+        public void EditArticle(int id, Article newArticle)
+        {
+            daoFactory.GetArticleRepo().EditArticle(id, newArticle);
         }
     }
 }

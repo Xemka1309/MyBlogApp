@@ -15,12 +15,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import { ArticleViewerComponent } from './components/article-viewer/article-viewer.component';
+import {MatTabsModule} from '@angular/material/tabs'; 
 
 @NgModule({
   declarations: [
     ArticleConstructorComponent,
     ArticleItem,
     ArticleListComponent,
+    ArticleViewerComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,9 +40,10 @@ import {MatIconModule} from '@angular/material/icon';
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
+    MatTabsModule,
   ],
   providers: [],
-  exports: [ArticleConstructorComponent,ArticleItem,ArticleListComponent]
+  exports: [ArticleConstructorComponent,ArticleItem,ArticleListComponent,ArticleViewerComponent]
 })
 
 export class ArticleModule {

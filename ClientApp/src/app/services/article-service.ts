@@ -6,6 +6,7 @@ import { ArticlePageParams } from '../modules/article/models/article-page-params
 
 @Injectable({providedIn: 'root'})
 export class ArticleService {
+    private currentAtricle:Article;
     private base = 'https://localhost:44382/api/articles';
     constructor(private http: HttpClient){
     }
@@ -14,6 +15,12 @@ export class ArticleService {
         return this.http.post(this.base,article);
     }
 
+    setCurrent(article:Article){
+        this.currentAtricle = article;
+    }
+    getCurrent():Article{
+        return this.currentAtricle;
+    }
     getArticles(): Observable<any> {
         return this.http.get(this.base);
     }
@@ -24,7 +31,11 @@ export class ArticleService {
         console.log(query);
         return this.http.get<Article[]>(query);
     }
-    public AddTagsToArticle(article){
+    editArticle(id:number, article:Article){
+        return this.http.put(this.base + "?id=" + id, article);
 
+    }
+    removeArticle(id:number){
+        return this.http.delete(this.base + "?id=" + id);
     }
 }

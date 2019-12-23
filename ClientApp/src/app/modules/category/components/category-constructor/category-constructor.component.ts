@@ -42,9 +42,9 @@ export class CategoryConstructorComponent implements OnInit, AfterContentInit {
         if (!this.form.valid)
             return;
         let category: Category = new Category();
-        category.id = this.form.value.id;
-        category.description = this.form.value.descr;
-        category.name = this.form.value.val;
+        category.Id = this.form.value.id;
+        category.Description = this.form.value.descr;
+        category.Name = this.form.value.val;
         this.categoryService.addCategory(category);
         this.loadCategories();
     }

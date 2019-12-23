@@ -15,10 +15,15 @@ import { ArticleTag } from '../../models/article-tag';
     styleUrls: ['./article-constructor.component.css']
 })
 export class ArticleConstructorComponent implements OnInit, AfterContentInit {
+    tabInd = 0;
     articleForm: FormGroup;
+    articleListForm:FormGroup;
     private categories: Category[];
+    private articles:Article[];
     private tags:Tag[];
     private articleTags:Tag[] = [];
+    public modes = ['New Article', 'Edit Article']
+    public formMode = "New article";
     constructor(private categoryService: CategoryService, private articleSerice:ArticleService, private tagService:TagService)  
     {
 
@@ -40,7 +45,10 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
             categoryId:new FormControl(),
             tagId:new FormControl(),
            });
-        
+        this.articleListForm = new FormGroup({
+            articleId:new FormControl(),
+        });
+        this.getArticles();
         
     }
     ngAfterContentInit() {
@@ -58,7 +66,6 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
         
     }
     public createArticle(formValue:FormGroup){
-        console.log("create article");
         console.log(formValue.controls.categoryId.value);
         let article:Article = new Article();
         let category = this.categories.find(x => x.Id === formValue.controls.categoryId.value);
@@ -78,7 +85,15 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
                 article.ArticleTags.push(articleTag)
             });
         }
-        this.articleSerice.addArticle(article).subscribe();
+        if (this.formMode == "New article"){
+            this.articleSerice.addArticle(article).subscribe();
+        }
+        if (this.formMode == "Edit article"){
+            article.Id = this.articleListForm.controls.articleId.value;
+            article.Publish4Time = null;
+            this.articleSerice.editArticle(article.Id,article).subscribe();
+        }
+        this.getArticles();   
         this.clearForm();
         
     }
@@ -93,5 +108,34 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
         console.log(this.articleTags);
     }
 
+    public getArticles(){
+        this.articleSerice.getArticles().subscribe(res =>{
+            this.articles = res;
+        }), error => console.log(error);
+
+    }
+    public goNew(){
+        this.tabInd = 0;
+        this.formMode = "New article";
+    }
+    public goEdit(){
+        this.formMode = "Edit article";
+        this.tabInd = 0;
+        let articleToEdit = this.articles.find(a => a.Id == this.articleListForm.controls.articleId.value);
+        this.articleForm.controls.title.setValue(articleToEdit.Title)
+        this.articleForm.controls.content.setValue(articleToEdit.Content);
+        this.articleForm.controls.description.setValue(articleToEdit.Description);
+        this.articleTags = [];
+        articleToEdit.ArticleTags.forEach(element => {
+            this.articleTags.push(this.tags.find(t => t.Id == element.TagId));
+        });
+        this.articleForm.controls.categoryId.setValue(articleToEdit.Category.Id);
+
+    }
+    public goDelete(){
+        this.formMode = "Delete article";
+        this.articleSerice.removeArticle(this.articleListForm.controls.articleId.value).subscribe();
+        this.getArticles();
+    }
     
 }

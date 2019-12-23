@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.Entity;
+using Newtonsoft.Json;
 
 namespace MyBlogApp.Controllers
 {
@@ -25,7 +26,7 @@ namespace MyBlogApp.Controllers
         [HttpGet]
         public IActionResult GetTags()
         {
-            return Ok(tagService.GetTags());
+            return Ok(JsonConvert.SerializeObject(tagService.GetTags()));
         }
         [HttpPost]
         public IActionResult AddTag([FromBody] Tag tag)

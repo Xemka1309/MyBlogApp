@@ -28,7 +28,7 @@ namespace MyBlogApp.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Post([FromBody]Article article)
+        public IActionResult Post([FromBody]Article article)
         {
             logger.LogInformation("Accept POST Article");
             if (article == null)
@@ -48,6 +48,32 @@ namespace MyBlogApp.Controllers
             if (filterStr == null || filterStr.Length < 1)
                 return BadRequest("Invalid param filterString");
             return Ok(articleService.GetArticlesFiltered(filterStr));
+        }
+
+        [HttpPut]
+        public IActionResult EditArticle([FromQuery] int id, [FromBody] Article article)
+        {
+            if (article == null)
+                return BadRequest("article is null");
+            articleService.EditArticle(id,article);
+            return Ok($"article with id:{id} was edited");
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteArticle([FromQuery] int id)
+        {
+            if (articleService.GetArticle(id).Title?.Length == 0)
+                return BadRequest("article does not exists");
+            try
+            {
+                articleService.RemoveArticle(id);
+            }
+            catch
+            {
+                return BadRequest("can't delete");
+            }
+            return Ok($"Article with id:{id} was deleted");
+
         }
 
         [HttpGet]

@@ -8,7 +8,6 @@ namespace MyBlogApp.DAL.DAOInterfaces
         IEnumerable<Tag> GetTags();
         Tag GetTag(int id);
         void AddTag(Tag tag);
-        void RemoveTag(Tag tag);
         void RemoveTag(int id);
         void EditTag(Tag oldTag, Tag newTag);
     }

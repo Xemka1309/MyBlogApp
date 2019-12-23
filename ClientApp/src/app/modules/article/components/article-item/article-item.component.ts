@@ -1,5 +1,7 @@
 import {Component, OnInit,Input} from '@angular/core';
 import { Article } from '../../models/article';
+import { ArticleService } from 'src/app/services/article-service';
+import { Router } from '@angular/router';
 
 /**
  * @title Card with multiple sections
@@ -10,15 +12,21 @@ import { Article } from '../../models/article';
   styleUrls: ['article-item.component.css'],
 })
 export class ArticleItem implements OnInit {
-    @Input() 
-    public article:Article;
-    constructor(){
+  public url:String = "https://localhost:44382/article";
+  @Input() 
+  public article:Article;
+  constructor(private articleService:ArticleService, private router: Router){
       
-    }
-    ngOnInit(): void {
+  }
+  ngOnInit(): void {
       //this.article = Article.cloneBase(this.articleIn);
       console.log(this.article);
     
+  }
+  openDetails(){
+      console.log("clicked");
+      this.articleService.setCurrent(this.article);
+      this.router.navigate(['/article']);
   }
   
 }
