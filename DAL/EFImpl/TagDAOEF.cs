@@ -22,14 +22,16 @@ namespace MyBlogApp.DAL.EFImpl
             dbContext.SaveChanges();
         }
 
-        public void EditTag(Tag oldTag, Tag newTag)
+        public void EditTag(int id, Tag newTag)
         {
-            throw new NotImplementedException();
+            var oldTag = GetTag(id);
+            oldTag.Value = newTag.Value;
+            dbContext.SaveChanges();
         }
 
         public Tag GetTag(int id)
         {
-            throw new NotImplementedException();
+            return dbContext.Tags.Where(t => t.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Tag> GetTags()
@@ -39,12 +41,12 @@ namespace MyBlogApp.DAL.EFImpl
 
         public void RemoveTag(Tag tag)
         {
-            throw new NotImplementedException();
+            dbContext.Tags.Remove(tag);
         }
 
         public void RemoveTag(int id)
         {
-            throw new NotImplementedException();
+            RemoveTag(GetTag(id));
         }
     }
 }

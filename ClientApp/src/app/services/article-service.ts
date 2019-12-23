@@ -26,10 +26,17 @@ export class ArticleService {
     }
     getArticlesFiltered(articleParams:ArticlePageParams):Observable<Article[]>{
         let query = this.base + "?";
+        let pars = new HttpParams({
+            fromObject:{
+                'PageSize':articleParams.pageSize.toString(),
+                'PageNumber':articleParams.pageNumber.toString(),
+                'CategoryId':articleParams.CategoryId.toString(),
+            }
+        });
         query = query + "pageSize=" + articleParams.pageSize
                 + "&pageNumber=" + articleParams.pageNumber;
         console.log(query);
-        return this.http.get<Article[]>(query);
+        return this.http.get<Article[]>(this.base+"?" + pars.toString());
     }
     editArticle(id:number, article:Article){
         return this.http.put(this.base + "?id=" + id, article);

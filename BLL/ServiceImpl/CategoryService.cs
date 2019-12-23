@@ -23,29 +23,28 @@ namespace MyBlogApp.BLL.ServiceImpl
             categoryRepo.AddCategory(category);
         }
 
-        public void EditCategory(Category oldCategory, Category newCategory)
+        public void EditCategory(int id, Category newCategory)
         {
-            throw new NotImplementedException();
+            if (newCategory == null)
+                throw new ServiceNullArgumentException("category was null");
+            
+            categoryRepo.EditCategory(id, newCategory);
+
         }
 
-        public Category[] GetCategories()
+        public IEnumerable<Category> GetCategories()
         {
             return categoryRepo.GetCategories();
         }
 
         public Category GetCategory(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveCategory(Category category)
-        {
-            throw new NotImplementedException();
+            return categoryRepo.GetCategory(id);
         }
 
         public void RemoveCategory(int id)
         {
-            throw new NotImplementedException();
+            categoryRepo.RemoveCategory(id);
         }
     }
 }

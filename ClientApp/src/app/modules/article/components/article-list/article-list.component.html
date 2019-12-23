@@ -9,8 +9,12 @@
               </mat-option>
             </mat-select>
         </mat-form-field>
+        <button mat-button (click)="filter()" type="button">Filter</button>
     </form>
     
+<div *ngIf="!hasArticles">
+    <h3 class="display-3">No articles to current filter</h3>
+</div>    
       
 </div>
 <div *ngFor="let item of articles; let i=index" class="article-container">

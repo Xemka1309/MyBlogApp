@@ -8,11 +8,10 @@ namespace MyBlogApp.BLL.Interfaces
 {
     public interface ICategoryService
     {
-        Category[] GetCategories();
+        IEnumerable<Category> GetCategories();
         Category GetCategory(int id);
         void AddCategory(Category category);
-        void RemoveCategory(Category category);
         void RemoveCategory(int id);
-        void EditCategory(Category oldCategory, Category newCategory);
+        void EditCategory(int id, Category newCategory);
     }
 }

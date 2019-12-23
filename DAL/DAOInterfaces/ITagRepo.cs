@@ -9,6 +9,6 @@ namespace MyBlogApp.DAL.DAOInterfaces
         Tag GetTag(int id);
         void AddTag(Tag tag);
         void RemoveTag(int id);
-        void EditTag(Tag oldTag, Tag newTag);
+        void EditTag(int id, Tag newTag);
     }
 }

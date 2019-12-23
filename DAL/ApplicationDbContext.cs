@@ -39,6 +39,7 @@ namespace MyBlogApp.DAL
                 .HasOne(sc => sc.Tag)
                 .WithMany(c => c.TagArticles)
                 .HasForeignKey(sc => sc.TagId);
+
             
         }
     }

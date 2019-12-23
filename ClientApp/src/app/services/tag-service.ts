@@ -22,4 +22,7 @@ export class TagService {
     {
         return this.http.get<Tag[]>(this.base);
     }
+    getTag(id:Number){
+        //return this.http.get<Tag>(this.base + "/item?id=" + id);
+    }
 }

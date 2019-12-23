@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.Entity;
@@ -17,17 +19,20 @@ namespace MyBlogApp.DAL.EFImpl
             if (category == null)
                 throw new NullArgumentDALException("Category was null");
 
+
             dbContext.Categories.Add(category);
             dbContext.SaveChanges();
         }
 
-        public void EditCategory(Category oldCategory, Category newCategory)
+        public void EditCategory(int id, Category newCategory)
         {
-            throw new NotImplementedException();
+            var oldCategory = dbContext.Categories.Where(c => c.Id == id).FirstOrDefault();
+            oldCategory.Name = newCategory.Name;
+            oldCategory.Description = newCategory.Description;
             dbContext.SaveChanges();
         }
 
-        public Category[] GetCategories()
+        public IEnumerable<Category> GetCategories()
         {
             if (dbContext.Categories != null)
                 return dbContext.Categories.ToArrayAsync().Result;
@@ -37,18 +42,17 @@ namespace MyBlogApp.DAL.EFImpl
 
         public Category GetCategory(int id)
         {
-            throw new NotImplementedException();
+            return dbContext.Categories.Where(c => c.Id == id).FirstOrDefault();
         }
 
         public void RemoveCategory(int id)
         {
-            throw new NotImplementedException();
-            dbContext.SaveChanges();
+            RemoveCategory(GetCategory(id));
         }
 
         public void RemoveCategory(Category category)
         {
-            throw new NotImplementedException();
+            dbContext.Categories.Remove(category);
             dbContext.SaveChanges();
         }
     }

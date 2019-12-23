@@ -8,7 +8,17 @@
       <p>
         {{article?.Description}}
       </p>
+      <p>
+          {{article?.Content}}
+      </p>
     </mat-card-content>
+    <mat-card-footer>
+        <span class="display-5">Tags:</span><br/>
+        <span *ngFor="let tagItem of articleTags">
+            {{tagItem.Value}},
+        </span>
+    </mat-card-footer>
+
     <img mat-card-image src="https://www.ringtv.com/wp-content/uploads/2019/12/Terence_Crawford_victory-770x576.jpg" alt="Photo of a Shiba Inu">
 
     <mat-card-actions>

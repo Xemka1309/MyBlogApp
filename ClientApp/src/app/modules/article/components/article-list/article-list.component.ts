@@ -18,6 +18,7 @@ export class ArticleListComponent implements OnInit{
     articles:Article[];  
     articleParams:ArticlePageParams;  
     categories:Category[];
+    hasArticles:boolean = true;
     constructor(private categoryService:CategoryService,private articleService:ArticleService, private router: Router) 
     {
         this.articleParams = new ArticlePageParams();
@@ -33,17 +34,24 @@ export class ArticleListComponent implements OnInit{
             categoryId:new FormControl(),
             startDate:new FormControl(),
             endDate:new FormControl(),
+            titleContains:new FormControl(),
            });
         this.articleParams.pageNumber = 1;
-        this.articleService.getArticlesFiltered(this.articleParams).subscribe((result:Article[]) =>{
-            this.articles = result;
-        }), error => console.log(error);
+        this.getPageArticles();
         
     }
     getPageArticles():void{
         this.articleService.getArticlesFiltered(this.articleParams).subscribe((result:Article[]) =>{
             this.articles = result;
+            this.hasArticles = false;
+            if (this.articles){
+                if (this.articles.length >= 1){
+                    this.hasArticles = true;
+            }
+        }
         }), error => console.log(error);
+        
+        
         
     }
     nextPage(){
@@ -51,6 +59,11 @@ export class ArticleListComponent implements OnInit{
         this.getPageArticles();
         window.scrollTo(0,0);
         
+    }
+    filter(){
+        this.articleParams.CategoryId = Number.parseInt(this.filterForm.controls.categoryId.value);
+        this.getPageArticles();
+
     }
     prevPage(){
         if (this.articleParams.pageNumber > 1)

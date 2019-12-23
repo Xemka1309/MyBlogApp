@@ -25,7 +25,8 @@ namespace MyBlogApp.DAL.EFImpl
                 article.ArticleTags = new List<ArticleTag>();
             if (article.PublishTime == null)
                 article.PublishTime = DateTime.Now;
-            
+
+            article.PublishTime = DateTime.Now;
             dbContext.Articles.Add(article);
             dbContext.Attach<Category>(article.Category);
             dbContext.SaveChanges();
@@ -58,7 +59,12 @@ namespace MyBlogApp.DAL.EFImpl
 
         public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
         {
-            return PagedList<Article>.ToPagedList(dbContext.Articles.Include(a => a.Category).Include(a => a.ArticleTags),
+            IEnumerable<Article> articles = dbContext.Articles.Include(a => a.Category).Include(a => a.ArticleTags);
+            if (parameters.CategoryId != -1)
+                articles = articles.Where(a => a.Category.Id == parameters.CategoryId);
+            if (parameters.TitleContains?.Length != 0)
+                articles = articles.Where(a => a.Title.Contains(parameters.TitleContains));
+            return PagedList<Article>.ToPagedList(articles,
                 parameters.PageNumber,
                 parameters.PageSize);
         }

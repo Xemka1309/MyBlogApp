@@ -12,12 +12,7 @@ export class CategoryService {
     }
 
     addCategory(category:Category){
-        let categoryX= {
-            Id:0,
-            Name:category.Name,
-            Description:category.Description
-        };
-        this.http.post(this.base, categoryX).subscribe();
+        return this.http.post(this.base, category);
 
     }
     removeCategory(category:Category){

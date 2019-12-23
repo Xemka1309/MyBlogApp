@@ -47,5 +47,37 @@ namespace MyBlogApp.Controllers
             logger.LogInformation($"Category with name: {category.Name} was added");
             return Ok("Category was added");
         }
+
+        [HttpPut]
+        public IActionResult EditCategory([FromQuery] int id, [FromBody] Category category)
+        {
+            if (category == null)
+                return BadRequest("Category was null");
+            try
+            {
+                categoryService.EditCategory(id, category);
+                return Ok($"Tag with id:{id} was edited");
+            }
+            catch
+            {
+                return BadRequest("Can't perform editing");
+            }
+            
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteCategory([FromQuery] int id)
+        {
+            try
+            {
+                categoryService.RemoveCategory(id);
+                return Ok("Delete ok");
+            }
+            catch
+            {
+                return BadRequest("Can't perform delete");
+            }
+            
+        }
     }
 }

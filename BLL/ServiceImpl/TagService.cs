@@ -23,14 +23,16 @@ namespace MyBlogApp.BLL.ServiceImpl
             this.tagRepo.AddTag(tag);
         }
 
-        public void EditTag(Tag oldTag, Tag newTag)
+        public void EditTag(int id, Tag newTag)
         {
-            throw new NotImplementedException();
+            if (newTag == null)
+                throw new ServiceNullArgumentException("Tag was null (in edit method)");
+            tagRepo.EditTag(id,newTag);
         }
 
         public Tag GetTag(int id)
         {
-            throw new NotImplementedException();
+            return tagRepo.GetTag(id);
         }
 
         public IEnumerable<Tag> GetTags()
@@ -39,14 +41,10 @@ namespace MyBlogApp.BLL.ServiceImpl
            
         }
 
-        public void RemoveTag(Tag tag)
-        {
-            throw new NotImplementedException();
-        }
-
         public void RemoveTag(int id)
         {
-            throw new NotImplementedException();
+            tagRepo.RemoveTag(id);
         }
+
     }
 }
