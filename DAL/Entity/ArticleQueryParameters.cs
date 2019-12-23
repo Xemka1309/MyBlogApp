@@ -7,6 +7,7 @@ namespace MyBlogApp.DAL.Entity
 {
     public class ArticleQueryParameters: QueryStringParameters
     {
+        public String Tags { get; set; } = "";
         public String TitleContains = "";
         public int CategoryId { get; set; } = -1;
         public uint MinDate { get; set; }

@@ -7,6 +7,8 @@ import { ArticlePageParams } from '../../models/article-page-params';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category-service';
 import { Category } from 'src/app/modules/category/models/category';
+import { Tag } from 'src/app/modules/tag/models/tag';
+import { TagService } from 'src/app/services/tag-service';
 
 @Component({
     selector: 'article-list',
@@ -15,11 +17,13 @@ import { Category } from 'src/app/modules/category/models/category';
 })
 export class ArticleListComponent implements OnInit{
     filterForm:FormGroup;
-    articles:Article[];  
+    articles:Article[];
+    tags:Tag[];
+    selectedTags:Tag[];  
     articleParams:ArticlePageParams;  
     categories:Category[];
     hasArticles:boolean = true;
-    constructor(private categoryService:CategoryService,private articleService:ArticleService, private router: Router) 
+    constructor(private categoryService:CategoryService,private articleService:ArticleService, private router: Router, private tagService:TagService) 
     {
         this.articleParams = new ArticlePageParams();
         this.articleParams.pageSize = 5;
@@ -30,13 +34,20 @@ export class ArticleListComponent implements OnInit{
         this.categoryService.getCategories().subscribe( (result:Category[]) =>{
             this.categories = result;
         }),error => console.log(error);
+        this.tagService.getTags().subscribe( (result:Tag[]) => {
+            this.tags = result;
+        } )
         this.filterForm = new FormGroup({
             categoryId:new FormControl(),
             startDate:new FormControl(),
             endDate:new FormControl(),
             titleContains:new FormControl(),
+            tagId: new FormControl(),
            });
         this.articleParams.pageNumber = 1;
+        this.articleParams.CategoryId = -1;
+        this.articleParams.Tags="";
+        this.articleParams.TitleContains = "";
         this.getPageArticles();
         
     }
@@ -61,7 +72,17 @@ export class ArticleListComponent implements OnInit{
         
     }
     filter(){
-        this.articleParams.CategoryId = Number.parseInt(this.filterForm.controls.categoryId.value);
+        if ((!this.filterForm.value.categoryId)){
+            this.articleParams.CategoryId = Number.parseInt(this.filterForm.value.categoryId);
+        }
+        if (this.selectedTags){
+            this.articleParams.Tags = "";
+            this.selectedTags.forEach(element => {
+                this.articleParams.Tags += element.Id.toString() + " ";
+            });
+            ;
+        }
+        console.log(this.articleParams);
         this.getPageArticles();
 
     }
@@ -74,6 +95,25 @@ export class ArticleListComponent implements OnInit{
         window.scrollTo(0,0);
     }
     
+    selectTag(){
+        if (!this.selectedTags){
+            this.selectedTags = [];
+        }
+        let id = +this.filterForm.value.tagId;
+        if (this.selectedTags.findIndex(t => t.Id == id) == -1){
+            this.selectedTags.push(this.tags.find(t => t.Id == id));
+        }
 
+
+    }
+    unselectTag(){
+        if (typeof(this.selectedTags) == undefined ){
+            this.selectedTags = new Tag[this.tags.length];
+        }
+        let id = Number.parseInt(this.filterForm.controls.tagId.value);
+        if (this.selectedTags.findIndex(t => t.Id == id) != -1){
+            this.selectedTags.splice(this.selectedTags.findIndex(t => t.Id == id),1);
+        }
+    }
     
 }

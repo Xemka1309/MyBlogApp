@@ -79,6 +79,10 @@ namespace MyBlogApp.Controllers
         [HttpGet]
         public IActionResult GetArticles([FromQuery] ArticleQueryParameters articleParameters)
         {
+            if (articleParameters == null)
+                return BadRequest("Null params");
+            if (articleParameters.Tags != null)
+                articleParameters.Tags = articleParameters.Tags.TrimEnd();
             var articles = articleService.GetArticles(articleParameters);
             if (articles == null)
                 return Ok(new List<Article>());

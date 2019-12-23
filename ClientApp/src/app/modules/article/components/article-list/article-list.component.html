@@ -2,14 +2,31 @@
 <div class="filter-bar">
     <h3>Filter bar</h3>
     <form [formGroup]="filterForm" autocomplete="off" novalidate  >
-        <mat-form-field>
+        <mat-form-field *ngIf="categories">
             <mat-select placeholder="Select Category" formControlName="categoryId">
               <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.Id">
                 {{categoryItem.Name}}
               </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-button (click)="filter()" type="button">Filter</button>
+        <div *ngIf="selectedTags" class="selected-tags">
+            <span>Selected tags:</span>
+            <span *ngFor ="let tagItem of selectedTags">
+                {{tagItem.Value}},
+            </span>
+        </div>
+        
+        <mat-form-field *ngIf="tags">
+            <mat-select placeholder="Select Tag/Tags" formControlName="tagId">
+              <mat-option *ngFor="let tagItem of tags"  [value]="tagItem.Id">
+                {{tagItem.Value}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-button (click)="selectTag()" type="button">Select tag</button>
+        <button mat-button (click)="unselectTag()" type="button">Unselect tag</button>
+        <br/><br/>
+        <button mat-button mat-raised-button color="primary" (click)="filter()" type="button">Filter</button>
     </form>
     
 <div *ngIf="!hasArticles">

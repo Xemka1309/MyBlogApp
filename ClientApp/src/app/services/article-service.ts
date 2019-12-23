@@ -26,15 +26,20 @@ export class ArticleService {
     }
     getArticlesFiltered(articleParams:ArticlePageParams):Observable<Article[]>{
         let query = this.base + "?";
+        if (isNaN(articleParams.CategoryId)){
+            articleParams.CategoryId = -1;
+        }
+        if (!articleParams.Tags){
+            articleParams.Tags = "";
+        }
         let pars = new HttpParams({
             fromObject:{
                 'PageSize':articleParams.pageSize.toString(),
                 'PageNumber':articleParams.pageNumber.toString(),
                 'CategoryId':articleParams.CategoryId.toString(),
+                'Tags': articleParams.Tags.toString(),
             }
         });
-        query = query + "pageSize=" + articleParams.pageSize
-                + "&pageNumber=" + articleParams.pageNumber;
         console.log(query);
         return this.http.get<Article[]>(this.base+"?" + pars.toString());
     }

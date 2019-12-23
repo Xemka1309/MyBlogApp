@@ -3,4 +3,5 @@ export class ArticlePageParams{
     CategoryId:number = -1;
     pageSize:number;
     pageNumber:number;
+    Tags:String = "";
 }
