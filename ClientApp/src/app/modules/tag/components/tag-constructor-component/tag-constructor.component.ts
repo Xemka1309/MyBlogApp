@@ -10,8 +10,12 @@ import { Tag } from '../../models/tag';
     styleUrls: ['./tag-constructor.component.css']
 })
 export class TagConstructorComponent implements OnInit, AfterContentInit {
-    tagForm: FormGroup;
-    private tags: Tag[];
+    public tagForm: FormGroup;
+    public controlForm:FormGroup;
+    public tabInd:number;
+    public tags: Tag[];
+    public cardTitle:String = "Create new tag";
+    public constructorMode:String = "NEW";
     constructor(private tagService: TagService)  
     {
 
@@ -24,14 +28,23 @@ export class TagConstructorComponent implements OnInit, AfterContentInit {
         this.tagForm = new FormGroup({
             value : new FormControl()
         });
+        this.controlForm = new FormGroup({
+            tagId:new FormControl()
+        });
         
     }
     ngAfterContentInit() {
         console.log("suda smotret000");
         console.log(this.tags);
     }
-    public hasError = (controlName: string, errorName: string) =>{
-        return this.tagForm.controls[controlName].hasError(errorName);
+    public hasError = (formId:number,controlName: string, errorName: string) =>{
+        if (formId == 1){
+            return this.tagForm.controls[controlName].hasError(errorName);
+        }
+        if (formId == 2){
+            return this.controlForm.controls[controlName].hasError(errorName);
+        }
+        
     }
     public onCancel = () => {
         
@@ -40,15 +53,37 @@ export class TagConstructorComponent implements OnInit, AfterContentInit {
         this.tagForm.controls.value.setValue('');
         
     }
-    public addTag(formValue:FormGroup){
-        console.log("Creating new tag");
+    public performAction(formValue:FormGroup){
+        
         let tag = new Tag();
         tag.Id = 0;
         tag.Value = formValue.controls.value.value;
-        this.tagService.addTag(tag).subscribe((result) => {
+        if (this.constructorMode == "NEW"){
+            this.tagService.addTag(tag).subscribe((result) => {
+            }), error => console.log(error);
+            return;
+        }
+        if (this.constructorMode == "EDIT"){
+            this.tagService.editTag(this.controlForm.controls.tagId.value,tag).subscribe(result => {
+            }), error => console.log(error);
 
-        }), error => console.log(error);
+        }
         
+        
+    }
+    public selectDeleteTag(formValue:FormGroup){
+
+    }
+    public selectEditTag(formValue:FormGroup){
+        this.cardTitle = "Edit tag";
+        this.constructorMode = "EDIT";
+        this.tabInd = 0;
+        this.tagForm.controls.value.setValue(this.tags.find(t => t.Id == this.controlForm.controls.tagId.value).Value);
+    }
+    public selectAddTag(){
+        this.cardTitle = "Create new tag";
+        this.constructorMode = "NEW";
+        this.tabInd = 0;
     }
 
     

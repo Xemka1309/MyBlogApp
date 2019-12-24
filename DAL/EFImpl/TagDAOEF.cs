@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MyBlogApp.DAL.Exceptions;
+using Microsoft.EntityFrameworkCore;
+
 namespace MyBlogApp.DAL.EFImpl
 {
     public class TagDAOEF : ITagRepo
@@ -37,6 +39,21 @@ namespace MyBlogApp.DAL.EFImpl
         public IEnumerable<Tag> GetTags()
         {
             return dbContext.Tags;
+        }
+
+        public IEnumerable<Tag> GetTagsOfArticle(int articleId)
+        {
+            var result = new List<Tag>();
+            if (dbContext.Articles.Where(a => a.Id == articleId).Count() != 1)
+                return result;
+            var articleTags = dbContext.Articles.Include(a => a.ArticleTags).Where(a => a.Id == articleId).First()?.ArticleTags;
+            if (articleTags == null)
+                return result;
+            foreach (var artTag in articleTags)
+            {
+                result.AddRange(dbContext.Tags.Where(t => t.Id == artTag.TagId));
+            }
+            return result;
         }
 
         public void RemoveTag(Tag tag)

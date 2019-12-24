@@ -41,6 +41,11 @@ namespace MyBlogApp.BLL.ServiceImpl
            
         }
 
+        public IEnumerable<Tag> GetTagsOfArticle(int articleId)
+        {
+            return tagRepo.GetTagsOfArticle(articleId);
+        }
+
         public void RemoveTag(int id)
         {
             tagRepo.RemoveTag(id);

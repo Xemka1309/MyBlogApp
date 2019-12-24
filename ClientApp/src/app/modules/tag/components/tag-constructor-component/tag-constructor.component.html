@@ -1,22 +1,49 @@
-
-  <mat-card>
-    <mat-card-title class="display-4">Create a new tag</mat-card-title>
-    <form [formGroup]="tagForm" autocomplete="off" novalidate  >
-        <mat-card-content>
-          <div class="example-container">
-          <mat-form-field >
-            <input class="tag-value" required matInput type="text" placeholder="Tag value" formControlName="value" id="value">
-            <mat-hint >Not more then 60 characters long.</mat-hint>
-            <mat-error *ngIf="hasError('value', 'required')">Title is required</mat-error>
-            <mat-error *ngIf="hasError('value', 'maxlength')">You have more than 60 characters</mat-error>
+<mat-tab-group [(selectedIndex)] = "tabInd" dynamicHeight>
+  <mat-tab label="Constructor">
+    <mat-card>
+      <mat-card-title class="display-4">{{cardTitle}}</mat-card-title>
+      <form [formGroup]="tagForm" autocomplete="off" novalidate  >
+          <mat-card-content>
+            <div class="example-container">
+            <mat-form-field >
+              <input class="tag-value" required matInput type="text" placeholder="Tag value" formControlName="value" id="value">
+              <mat-hint >Not more then 60 characters long.</mat-hint>
+              <mat-error *ngIf="hasError(1,'value', 'required')">Tag value is required</mat-error>
+              <mat-error *ngIf="hasError(1,'value', 'maxlength')">You have more than 60 characters</mat-error>
+            </mat-form-field>
+            <br/>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+              <button type="button" (click)="performAction(tagForm)" mat-raised-button color="primary" [disabled]="!tagForm.valid">Create</button>
+              <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+          </mat-card-actions>
+        </form>
+  </mat-card>
+  </mat-tab>
+  <mat-tab label = "Control">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup] = "controlForm">
+          <mat-form-field>
+            <mat-select required placeholder="Select tag to edit/delet" formControlName="tagId">
+              <mat-option *ngFor="let tagItem of tags" [value]="tagItem.Id">
+                {{tagItem?.Value}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError(2,'tagId', 'required')">You must select tag</mat-error>
           </mat-form-field>
-          <br/>
-          </div>
-        </mat-card-content>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button type="button" (click)="selectEditTag(controlForm)" mat-raised-button color="primary" [disabled]="!controlForm.valid">Edit</button>
+        <button type="button" mat-raised-button color="warn" [disabled]="!controlForm.valid" (click)="selectDeleteTag(controlForm)">Delete</button>
+        <button type="button" mat-raised-button color="primary"(click)="selectAddTag(controlForm)">New</button>
+    </mat-card-actions>
+      
+    </mat-card>
+    
 
-        <mat-card-actions>
-            <button type="button" (click)="addTag(tagForm)" mat-raised-button color="primary" [disabled]="!tagForm.valid">Create</button>
-            <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
-        </mat-card-actions>
-      </form>
-</mat-card>
+  </mat-tab>
+</mat-tab-group>
+  

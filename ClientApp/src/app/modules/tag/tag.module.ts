@@ -13,6 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { TagConstructorComponent } from './components/tag-constructor-component/tag-constructor.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { TagConstructorComponent } from './components/tag-constructor-component/
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
+    MatTabsModule,
   ],
   providers: [],
   exports: [TagConstructorComponent]

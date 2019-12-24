@@ -10,5 +10,7 @@ namespace MyBlogApp.DAL.DAOInterfaces
         void AddTag(Tag tag);
         void RemoveTag(int id);
         void EditTag(int id, Tag newTag);
+        IEnumerable<Tag> GetTagsOfArticle(int articleId);
+
     }
 }

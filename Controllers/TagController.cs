@@ -29,6 +29,14 @@ namespace MyBlogApp.Controllers
         {
             return Ok(JsonConvert.SerializeObject(tagService.GetTag(id)));
         }
+
+        [HttpGet]
+        [Route ("tagsOFarticle")]
+        public IActionResult GetTagsOfArtilce([FromQuery]int articleId) 
+        {
+            return Ok(JsonConvert.SerializeObject(tagService.GetTagsOfArticle(articleId)));
+        }
+
         [HttpGet]
         public IActionResult GetTags()
         {

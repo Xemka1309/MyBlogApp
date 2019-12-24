@@ -19,12 +19,9 @@ export class ArticleViewerComponent implements OnInit {
     }
     ngOnInit(): void {
       this.article = this.articleService.getCurrent();
-      //this.articleTags = [];
-     // this.article.ArticleTags.forEach(element => {
-     //     this.tagService.getTag(element.TagId).subscribe(t =>{
-      //        this.articleTags.push(t);
-      //    })
-      //});
+      this.tagService.getTagsOfArticle(this.article.Id).subscribe(result => {
+        this.articleTags = result;
+      })
       console.log(this.article);
       console.log(this.articleTags);
     

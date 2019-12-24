@@ -6,7 +6,7 @@ import { Tag } from '../modules/tag/models/tag';
 
 @Injectable({providedIn: 'root'})
 export class TagService {
-    private base = 'https://localhost:44382/api/tag';
+    private base = 'https://localhost:44382/api/tag/';
     private tags:Tag[];
     constructor(private http: HttpClient){
         this.tags = [];
@@ -15,8 +15,16 @@ export class TagService {
     addTag(tag:Tag):Observable<any>{
         return this.http.post(this.base,tag);
     }
-    removeTag(tag:Tag){
+    removeTag(id:number){
+        if (isNaN(id))
+            return;
+        return this.http.delete(this.base + "?id=" + id.toString());
 
+    }
+    editTag(id:number, newTag:Tag){
+        if (isNaN(id) || !newTag)
+            return;
+        return this.http.put(this.base + "?id=" + id.toString(),newTag)
     }
     getTags()
     {
@@ -24,5 +32,11 @@ export class TagService {
     }
     getTag(id:Number){
         //return this.http.get<Tag>(this.base + "/item?id=" + id);
+    }
+    getTagsOfArticle(articleId:number){
+        if (isNaN(articleId)){
+            return;
+        }
+        return this.http.get<Tag[]>(this.base + "tagsOFarticle?articleId=" + articleId.toString());
     }
 }

@@ -13,5 +13,6 @@ namespace MyBlogApp.BLL.Interfaces
         void AddTag(Tag tag);
         void RemoveTag(int id);
         void EditTag(int id, Tag newTag);
+        public IEnumerable<Tag> GetTagsOfArticle(int articleId);
     }
 }
