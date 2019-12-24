@@ -44,6 +44,7 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
             picpass:new FormControl(),
             categoryId:new FormControl(),
             tagId:new FormControl(),
+            pictureUrl:new FormControl(),
            });
         this.articleListForm = new FormGroup({
             articleId:new FormControl(),
@@ -52,8 +53,7 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
         
     }
     ngAfterContentInit() {
-        console.log("suda smotret000");
-        console.log(this.categories);
+
     }
     public hasError = (controlName: string, errorName: string) =>{
         return this.articleForm.controls[controlName].hasError(errorName);
@@ -74,7 +74,7 @@ export class ArticleConstructorComponent implements OnInit, AfterContentInit {
         article.Content = formValue.controls.content.value;
         article.Title = formValue.controls.title.value;
         article.Description = formValue.controls.description.value;
-        article.PicsUrl = "articles/" + article.Title;
+        article.PicsUrl = formValue.controls.pictureUrl.value;
         article.Id = 0;
         if (this.articleTags.length > 0){
             article.ArticleTags = [];

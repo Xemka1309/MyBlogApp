@@ -9,7 +9,7 @@
         {{article?.Description}}
       </p>
     </mat-card-content>
-    <img mat-card-image src="https://cs9.pikabu.ru/post_img/2017/05/12/8/1494592816133830021.jpg" alt="Photo of a Shiba Inu">
+    <img mat-card-image [src]="article?.PicsUrl" alt="Photo of a Shiba Inu">
 
     <mat-card-actions>
       <button mat-button>LIKE</button>

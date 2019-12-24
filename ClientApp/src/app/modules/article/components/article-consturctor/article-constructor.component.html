@@ -25,6 +25,9 @@
                 <mat-error *ngIf="hasError('content', 'required')">Content is required</mat-error>
               </mat-form-field>
               <mat-form-field>
+                <textarea  formControlName = "pictureUrl" matInput placeholder="Picture url"></textarea>
+              </mat-form-field>
+              <mat-form-field>
                 <mat-select required placeholder="Select Category" formControlName="categoryId">
                   <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.Id">
                     {{categoryItem.Name}}
