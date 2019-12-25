@@ -11,16 +11,17 @@ export class CategoryService {
         this.categories = [];
     }
 
-    addCategory(category:Category){
+    public addCategory(category:Category):Observable<any>{
         return this.http.post(this.base, category);
 
     }
-    removeCategory(category:Category){
-        this.categories.splice(this.categories.findIndex(x => x.Id === category.Id),1);
-
-    }
-    getCategories()
-    {
+    public getCategories():Observable<any>{
         return this.http.get(this.base);
+    }
+    public editCategory(id:number, newCategory:Category):Observable<any>{
+        return this.http.put(this.base + "?id=" + id.toString(), newCategory);
+    }
+    public deleteCategory(id:number):Observable<any>{
+        return this.http.delete(this.base + "?id=" + id.toString());
     }
 }

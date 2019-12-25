@@ -19,8 +19,7 @@ export class ArticleItem implements OnInit {
       
   }
   ngOnInit(): void {
-      //this.article = Article.cloneBase(this.articleIn);
-      console.log(this.article);
+    console.log(this.article);
     
   }
   openDetails(){

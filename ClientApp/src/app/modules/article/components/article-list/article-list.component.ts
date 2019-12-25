@@ -72,7 +72,8 @@ export class ArticleListComponent implements OnInit{
         
     }
     filter(){
-        if ((!this.filterForm.value.categoryId)){
+        this.articleParams.pageNumber = 1;
+        if ((!this.filterForm.value.categoryId.value)){
             this.articleParams.CategoryId = Number.parseInt(this.filterForm.value.categoryId);
         }
         if (this.selectedTags){
@@ -82,6 +83,7 @@ export class ArticleListComponent implements OnInit{
             });
             ;
         }
+        
         console.log(this.articleParams);
         this.getPageArticles();
 
@@ -107,8 +109,8 @@ export class ArticleListComponent implements OnInit{
 
     }
     unselectTag(){
-        if (typeof(this.selectedTags) == undefined ){
-            this.selectedTags = new Tag[this.tags.length];
+        if (!this.selectedTags){
+            this.selectedTags = [];
         }
         let id = Number.parseInt(this.filterForm.controls.tagId.value);
         if (this.selectedTags.findIndex(t => t.Id == id) != -1){

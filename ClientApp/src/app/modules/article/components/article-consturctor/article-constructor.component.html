@@ -83,8 +83,8 @@
             </mat-card-content>
             <mat-card-actions>
                 <button type = "button" (click)="goNew()" mat-raised-button color="primary">New Article</button>
-                <button type="button" [disabled]="!articleListForm.valid" mat-raised-button color="warn" (click)="goEdit()">Edit Article </button>
-                <button type="button" [disabled]="!articleListForm.valid" mat-raised-button color="warn" (click)="goDelete()">DeleteArticle</button>
+                <button type="button" [disabled]="!articleListForm.valid" [disabled]="!articleForm.valid" mat-raised-button color="warn" (click)="goEdit()">Edit Article </button>
+                <button type="button" [disabled]="!articleListForm.valid" [disabled]="!articleForm.valid" mat-raised-button color="warn" (click)="goDelete()">DeleteArticle</button>
             </mat-card-actions>
           </form>
       </mat-card>

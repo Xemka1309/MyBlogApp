@@ -1,38 +1,55 @@
 <h2>This is category constructor</h2>
 
-<p *ngIf="!categories"><em>Loading...</em></p>
-<div *ngIf="categories">
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="categories">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Description</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let element of categories">
-        <td>{{element.Id}}</td>
-        <td>{{element.Description}}</td>
-        <td>{{element.Name}}</td>
-      </tr>
-    </tbody>
-</table>
-</div>
+<mat-tab-group [(selectedIndex)] = "tabInd" dynamicHeight>
+  <mat-tab label="Constructor">
+    <mat-card>
+      <mat-card-title class="display-4">{{cardTitle}}</mat-card-title>
+      <form [formGroup]="categoryForm" autocomplete="off" novalidate  >
+          <mat-card-content>
+            <div class="example-container">
+            <mat-form-field >
+              <input class="category-value" required matInput type="text" placeholder="Category name" formControlName="name">
+              <mat-hint >Not more then 60 characters long.</mat-hint>
+              <mat-error *ngIf="hasError(1,'name', 'required')">Name is required</mat-error>
+              <mat-error *ngIf="hasError(1,'name', 'maxlength')">You have more than 60 characters</mat-error>
+            </mat-form-field>
+            <br/>
+            <mat-form-field >
+              <input class="category-descr" required matInput type="text" placeholder="Category description" formControlName="descr">
+            </mat-form-field>
+            <br/>
+            </div>
+          </mat-card-content>
+          <br/><br/>
+          <mat-card-actions>
+              <button type="button" (click)="performAction()" mat-raised-button color="primary" [disabled]="!categoryForm.valid">OK</button>
+              <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+          </mat-card-actions>
+        </form>
+  </mat-card>
+  </mat-tab>
+  <mat-tab label = "Control">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup] = "controlForm">
+          <mat-form-field>
+            <mat-select required placeholder="Select category" formControlName="categoryId">
+              <mat-option *ngFor="let categoryItem of categories" [value]="categoryItem.Id">
+                {{categoryItem?.Name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError(2,'categoryId', 'required')">You must select category</mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button type="button" (click)="selectEditCategory()" mat-raised-button color="primary" [disabled]="!controlForm.valid">Edit</button>
+        <button type="button" mat-raised-button color="warn" [disabled]="!controlForm.valid" (click)="selectDeleteCategory()">Delete</button>
+        <button type="button" mat-raised-button color="primary"(click)="selectAddCategory()">New</button>
+    </mat-card-actions>
+    </mat-card>
+    
 
-
-<div class="category-constructor-container">
-  <form [formGroup]="form">
-    <mat-form-field>
-      <input required formControlName="val" width="50px" matInput placeholder="Category name">
-    </mat-form-field>
-    <br/>
-    <br/>
-    <mat-form-field>
-        <input formControlName="descr" width="50px" matInput placeholder="Category description">
-    </mat-form-field>
-    <br/>
-    <button class="btn btn-primary btn-add-category" type="submit" [(value)]="buttonText" (click)="addCategory()">Add category</button>
-  </form>
+  </mat-tab>
+</mat-tab-group>
   
-</div>

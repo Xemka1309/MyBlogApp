@@ -14,6 +14,7 @@
             <br/>
             </div>
           </mat-card-content>
+          <br/><br/>
           <mat-card-actions>
               <button type="button" (click)="performAction(tagForm)" mat-raised-button color="primary" [disabled]="!tagForm.valid">Create</button>
               <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
@@ -26,7 +27,7 @@
       <mat-card-content>
         <form [formGroup] = "controlForm">
           <mat-form-field>
-            <mat-select required placeholder="Select tag to edit/delet" formControlName="tagId">
+            <mat-select required placeholder="Select tag" formControlName="tagId">
               <mat-option *ngFor="let tagItem of tags" [value]="tagItem.Id">
                 {{tagItem?.Value}}
               </mat-option>

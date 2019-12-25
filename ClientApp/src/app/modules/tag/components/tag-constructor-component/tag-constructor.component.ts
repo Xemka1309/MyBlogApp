@@ -13,9 +13,10 @@ export class TagConstructorComponent implements OnInit, AfterContentInit {
     public tagForm: FormGroup;
     public controlForm:FormGroup;
     public tabInd:number;
-    public tags: Tag[];
     public cardTitle:String = "Create new tag";
     public constructorMode:String = "NEW";
+    public tags: Tag[];
+    
     constructor(private tagService: TagService)  
     {
 

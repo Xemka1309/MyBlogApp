@@ -2,7 +2,7 @@
     margin-top: 50px;
 }
 mat-card-title{
-    font-size: 30px;
+    font-size: 35px;
 }
 mat-card-subtitle{
     font-size: 25px;
@@ -13,4 +13,8 @@ mat-card-content{
 .link-button{
     text-decoration: none;
     height: 0px;
+}
+img{
+    
+    overflow: hidden;
 }

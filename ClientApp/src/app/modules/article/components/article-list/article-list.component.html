@@ -9,13 +9,14 @@
               </mat-option>
             </mat-select>
         </mat-form-field>
-        <div *ngIf="selectedTags" class="selected-tags">
+        <br/><br/>
+        <div *ngIf="selectedTags" class="selected-tags display-4">
             <span>Selected tags:</span>
             <span *ngFor ="let tagItem of selectedTags">
                 {{tagItem.Value}},
             </span>
         </div>
-        
+        <br/><br/>
         <mat-form-field *ngIf="tags">
             <mat-select placeholder="Select Tag/Tags" formControlName="tagId">
               <mat-option *ngFor="let tagItem of tags"  [value]="tagItem.Id">
@@ -23,8 +24,8 @@
               </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-button (click)="selectTag()" type="button">Select tag</button>
-        <button mat-button (click)="unselectTag()" type="button">Unselect tag</button>
+        <button mat-button mat-raised-button color="warn" (click)="selectTag()" type="button">Select tag</button>
+        <button mat-button mat-raised-button color="warn" (click)="unselectTag()" type="button">Unselect tag</button>
         <br/><br/>
         <button mat-button mat-raised-button color="primary" (click)="filter()" type="button">Filter</button>
     </form>
