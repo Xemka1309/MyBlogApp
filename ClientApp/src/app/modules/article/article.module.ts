@@ -17,6 +17,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { ArticleViewerComponent } from './components/article-viewer/article-viewer.component';
 import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatDatepickerModule} from '@angular/material/datepicker'; 
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatToolbarModule,
     MatIconModule,
     MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   exports: [ArticleConstructorComponent,ArticleItem,ArticleListComponent,ArticleViewerComponent]

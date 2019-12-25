@@ -82,43 +82,61 @@ namespace MyBlogApp.DAL.EFImpl
         }
         public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
         {
+            static double ConvertToUnixTimestamp(DateTime date)
+            {
+                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                TimeSpan diff = date.ToUniversalTime() - origin;
+                return Math.Floor(diff.TotalMilliseconds);
+            }
+
             IEnumerable<Article> articles = dbContext.Articles.Include(a => a.Category).Include(a => a.ArticleTags);
             if (parameters.CategoryId != -1)
                 articles = articles.Where(a => a.Category.Id == parameters.CategoryId);
-
+   
             if (parameters.TitleContains?.Length != 0)
                 articles = articles.Where(a => a.Title.Contains(parameters.TitleContains));
 
+
+            if (parameters.MaxDate != 1)
+            {
+                articles = articles.Where(a => ConvertToUnixTimestamp(a.PublishTime) >= parameters.MinDate && ConvertToUnixTimestamp(a.PublishTime) <= parameters.MaxDate);
+            }
+            
+
             if (parameters.Tags != null && parameters.Tags?.Length != 0)
             {
+                var articlesWithTags = new List<Article>();
                 var tags = parameters.Tags.Split(' ');
-                List<Article> articlesWithTags = new List<Article>();
-                try
+                var tagsIds = new List<int>();
+                int value;
+                bool parsed;
+                foreach (var tag in tags)
                 {
-                    foreach (var article in articles)
+                    parsed = int.TryParse(tag, out value);
+                    if (parsed)
                     {
-                        var containsTags = true;
-                        var articleTags = GetArticleTagsId(article);
-                        if (tags.Length <= articleTags.Length)
-                        {
-                            foreach (var tagValue in tags)
-                            {
-                                if (!articleTags.Contains(tagValue))
-                                {
-                                    containsTags = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (containsTags)
-                            articlesWithTags.Add(article);
+                        tagsIds.Add(value);
                     }
-                    articles = articlesWithTags;
                 }
-                catch
-                {
 
+                bool containAllTags;
+                foreach (var article in articles)
+                {
+                    containAllTags = true;
+                    foreach (var tagId in tagsIds)
+                    {
+                        if (!article.ArticleTags.Any(a => a.TagId == tagId))
+                        {
+                            containAllTags = false;
+                        }
+                    }
+                    if (containAllTags)
+                    {
+                        articlesWithTags.Add(article);
+                    }
                 }
+
+                articles = articlesWithTags;
             }
 
             return PagedList<Article>.ToPagedList(articles,

@@ -54,6 +54,8 @@ namespace MyBlogApp.Controllers
         [HttpPut]
         public IActionResult EditTag([FromQuery] int id, [FromBody] Tag newTag)
         {
+            if (tagService.GetTag(id) == null)
+                return BadRequest("Invalid tag id to edit");
             if (newTag == null)
                 return BadRequest("Null tag");
             try
@@ -71,6 +73,8 @@ namespace MyBlogApp.Controllers
         [HttpDelete]
         public IActionResult DeleteTag([FromQuery] int id)
         {
+            if (tagService.GetTag(id) == null)
+                return BadRequest("Invalid tag id to delete");
             try
             {
                 tagService.RemoveTag(id);

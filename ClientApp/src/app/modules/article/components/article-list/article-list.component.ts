@@ -17,6 +17,7 @@ import { TagService } from 'src/app/services/tag-service';
 })
 export class ArticleListComponent implements OnInit{
     filterForm:FormGroup;
+    invalidDatePicked:boolean = false;
     articles:Article[];
     tags:Tag[];
     selectedTags:Tag[];  
@@ -39,8 +40,8 @@ export class ArticleListComponent implements OnInit{
         } )
         this.filterForm = new FormGroup({
             categoryId:new FormControl(),
-            startDate:new FormControl(),
-            endDate:new FormControl(),
+            startDate:new FormControl(new Date()),
+            endDate:new FormControl(new Date()),
             titleContains:new FormControl(),
             tagId: new FormControl(),
            });
@@ -73,9 +74,37 @@ export class ArticleListComponent implements OnInit{
     }
     filter(){
         this.articleParams.pageNumber = 1;
-        if ((!this.filterForm.value.categoryId.value)){
-            this.articleParams.CategoryId = Number.parseInt(this.filterForm.value.categoryId);
+        let date:Date = this.filterForm.controls.startDate.value;
+        console.log(date.valueOf());
+        console.log(this.filterForm.controls.startDate.value);
+        if (!this.filterForm.value.categoryId){
+            this.articleParams.CategoryId = -1;
         }
+        else{
+            if ((this.filterForm.value.categoryId.value)){
+                if (typeof(this.filterForm.value.categoryId) == "undefined"){
+                    this.articleParams.CategoryId = -1;
+                }
+                else{
+                    this.articleParams.CategoryId = Number.parseInt(this.filterForm.value.categoryId);
+                }
+                
+            }
+        }
+        
+       
+        if (this.filterForm.controls.startDate){
+            this.articleParams.MinDate = this.filterForm.controls.startDate.value.valueOf;
+        }
+        if (this.filterForm.controls.endDate){
+            this.articleParams.MaxDate = this.filterForm.controls.endDate.value.valueOf;
+        }
+        if (this.articleParams.MaxDate < this.articleParams.MinDate){
+            this.invalidDatePicked = true;
+            this.articleParams.MinDate = null;
+            this.articleParams.MaxDate = null;
+        }
+
         if (this.selectedTags){
             this.articleParams.Tags = "";
             this.selectedTags.forEach(element => {

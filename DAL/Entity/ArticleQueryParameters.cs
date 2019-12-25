@@ -10,8 +10,9 @@ namespace MyBlogApp.DAL.Entity
         public String Tags { get; set; } = "";
         public String TitleContains = "";
         public int CategoryId { get; set; } = -1;
-        public uint MinDate { get; set; }
-        public uint MaxDate { get; set; } = (uint)DateTime.Now.Year * 365 + (uint)DateTime.Now.Day;
-        
+        public uint MinDate { get; set; } = 0;
+        public uint MaxDate { get; set; } = 1;
+        public bool ValidYearRange => MaxDate > MinDate;
+
     }
 }

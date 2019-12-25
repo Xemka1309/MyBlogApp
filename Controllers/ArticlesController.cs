@@ -81,6 +81,10 @@ namespace MyBlogApp.Controllers
         {
             if (articleParameters == null)
                 return BadRequest("Null params");
+            if (!articleParameters.ValidYearRange)
+            { 
+                return BadRequest("Max date cannot be less than min date");
+            }
             if (articleParameters.Tags != null)
                 articleParameters.Tags = articleParameters.Tags.TrimEnd();
             var articles = articleService.GetArticles(articleParameters);
@@ -98,7 +102,7 @@ namespace MyBlogApp.Controllers
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-            logger.LogInformation($"Returned {articles.TotalCount} owners from database.");
+            logger.LogInformation($"Returned {articles.TotalCount} articles from database.");
 
             return Ok(JsonConvert.SerializeObject(articles));
         }
