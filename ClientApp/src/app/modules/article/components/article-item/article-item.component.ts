@@ -1,4 +1,4 @@
-import {Component, OnInit,Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../../models/article';
 import { ArticleService } from 'src/app/services/article-service';
 import { Router } from '@angular/router';
@@ -9,23 +9,19 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'article-item',
   templateUrl: 'article-item.component.html',
-  styleUrls: ['article-item.component.css'],
+  styleUrls: ['article-item.component.css']
 })
-export class ArticleItem implements OnInit {
-  public url:String = "https://localhost:44382/article";
-  @Input() 
-  public article:Article;
-  constructor(private articleService:ArticleService, private router: Router){
-      
-  }
+export class ArticleItemComponent implements OnInit {
+  public url: String = 'https://localhost:44382/article';
+  @Input()
+  public article: Article;
+  constructor(private articleService: ArticleService, private router: Router) {}
   ngOnInit(): void {
     console.log(this.article);
-    
   }
-  openDetails(){
-      console.log("clicked");
-      this.articleService.setCurrent(this.article);
-      this.router.navigate(['/article']);
+  openDetails() {
+    console.log('clicked');
+    this.articleService.setCurrent(this.article);
+    this.router.navigate(['/article']);
   }
-  
 }

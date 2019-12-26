@@ -1,10 +1,8 @@
 ﻿using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.Entity;
-using System;
+using MyBlogApp.DAL.Exceptions;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MyBlogApp.BLL.Exceptions;
 
 namespace MyBlogApp.BLL.ServiceImpl
@@ -20,35 +18,83 @@ namespace MyBlogApp.BLL.ServiceImpl
         {
             if (tag == null)
                 throw new ServiceNullArgumentException("Tag was null");
-            this.tagRepo.AddTag(tag);
+            try
+            {
+                this.tagRepo.AddTag(tag);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public void EditTag(int id, Tag newTag)
         {
             if (newTag == null)
                 throw new ServiceNullArgumentException("Tag was null (in edit method)");
-            tagRepo.EditTag(id,newTag);
+            try
+            {
+                tagRepo.EditTag(id, newTag);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public Tag GetTag(int id)
         {
-            return tagRepo.GetTag(id);
+            try
+            {
+                return tagRepo.GetTag(id);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public IEnumerable<Tag> GetTags()
         {
-            return this.tagRepo.GetTags();
+            try
+            {
+                return this.tagRepo.GetTags();
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
            
         }
 
         public IEnumerable<Tag> GetTagsOfArticle(int articleId)
         {
-            return tagRepo.GetTagsOfArticle(articleId);
+            try
+            {
+                return tagRepo.GetTagsOfArticle(articleId);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public void RemoveTag(int id)
         {
-            tagRepo.RemoveTag(id);
+            try
+            {
+                tagRepo.RemoveTag(id);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
     }

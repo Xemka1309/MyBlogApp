@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using MyBlogApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using MyBlogApp.DAL;
 using MyBlogApp.DAL.Entity;
 using MyBlogApp.BLL.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using MyBlogApp.DAL.Entity.Infrastructure;
+using MyBlogApp.BLL.Exceptions;
 
 namespace MyBlogApp.Controllers
 {
@@ -33,63 +29,102 @@ namespace MyBlogApp.Controllers
             logger.LogInformation("Accept POST Article");
             if (article == null)
             {
-                logger.LogError("Null article accepted from POST");
-                return BadRequest("invalid article object");
+                return BadRequest(JsonConvert.SerializeObject("invalid article object"));
             }
-            articleService.AddArticle(article);
-            logger.LogInformation("Article was added from POST method");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                articleService.AddArticle(article);
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
+            }
+            
+            logger.LogInformation(JsonConvert.SerializeObject("Article was added from POST method"));
             return Ok(article);
         }
-            
-        [HttpGet]
-        [Route("{filterStr}")]
-        public IActionResult GetFiltered(String filterStr, String abc)
-        {
-            if (filterStr == null || filterStr.Length < 1)
-                return BadRequest("Invalid param filterString");
-            return Ok(articleService.GetArticlesFiltered(filterStr));
-        }
 
+        [Authorize]
         [HttpPut]
         public IActionResult EditArticle([FromQuery] int id, [FromBody] Article article)
         {
             if (article == null)
-                return BadRequest("article is null");
-            articleService.EditArticle(id,article);
-            return Ok($"article with id:{id} was edited");
+                return BadRequest(JsonConvert.SerializeObject("article is null"));
+
+            if (articleService.GetArticle(id) == null)
+                return BadRequest(JsonConvert.SerializeObject("article does not exists"));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                articleService.EditArticle(id, article);
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
+            }
+            return Ok(article);
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteArticle([FromQuery] int id)
         {
-            if (articleService.GetArticle(id).Title?.Length == 0)
-                return BadRequest("article does not exists");
+            if (articleService.GetArticle(id) == null)
+                return BadRequest(JsonConvert.SerializeObject("article does not exists"));
+
             try
             {
                 articleService.RemoveArticle(id);
             }
-            catch
+            catch (ServiceException ex)
             {
-                return BadRequest("can't delete");
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
             }
-            return Ok($"Article with id:{id} was deleted");
-
+            return Ok(id);
         }
 
         [HttpGet]
         public IActionResult GetArticles([FromQuery] ArticleQueryParameters articleParameters)
         {
             if (articleParameters == null)
-                return BadRequest("Null params");
+                return BadRequest(JsonConvert.SerializeObject("Null params"));
+
             if (!articleParameters.ValidYearRange)
             { 
-                return BadRequest("Max date cannot be less than min date");
+                return BadRequest(JsonConvert.SerializeObject("Max date cannot be less than min date"));
             }
+
             if (articleParameters.Tags != null)
                 articleParameters.Tags = articleParameters.Tags.TrimEnd();
-            var articles = articleService.GetArticles(articleParameters);
+
+            PagedList<Article> articles = null;
+            try
+            {
+                articles = articleService.GetArticles(articleParameters);
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
+            }
+
             if (articles == null)
                 return Ok(new List<Article>());
+
             var metadata = new
             {
                 articles.TotalCount,

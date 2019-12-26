@@ -22,11 +22,12 @@ namespace MyBlogApp.DAL
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ArticleTag>()
                 .HasKey(t => new { t.ArticleId, t.TagId });
 
@@ -40,7 +41,6 @@ namespace MyBlogApp.DAL
                 .WithMany(c => c.TagArticles)
                 .HasForeignKey(sc => sc.TagId);
 
-            
         }
     }
     

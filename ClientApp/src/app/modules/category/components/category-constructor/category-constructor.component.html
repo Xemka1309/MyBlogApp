@@ -22,7 +22,7 @@
           </mat-card-content>
           <br/><br/>
           <mat-card-actions>
-              <button type="button" (click)="performAction()" mat-raised-button color="primary" [disabled]="!categoryForm.valid">OK</button>
+              <button type="button" (click)="performAction()" mat-raised-button color="primary" [disabled]="!categoryForm.valid">{{constructorMode}}</button>
               <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
           </mat-card-actions>
         </form>
@@ -48,8 +48,7 @@
         <button type="button" mat-raised-button color="primary"(click)="selectAddCategory()">New</button>
     </mat-card-actions>
     </mat-card>
-    
+
 
   </mat-tab>
 </mat-tab-group>
-  

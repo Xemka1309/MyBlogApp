@@ -14,9 +14,8 @@
               </mat-form-field>
               <br/>
               <mat-form-field>
-                <input  required matInput type="text" placeholder="Article description" formControlName="description">
+                <input matInput type="text" placeholder="Article description" formControlName="description">
                 <mat-hint >Not more then 100 characters long.</mat-hint>
-                <mat-error *ngIf="hasError('description', 'required')">Description is required</mat-error>
                 <mat-error *ngIf="hasError('description', 'maxlength')">You have more than 100 characters</mat-error>
               </mat-form-field>
               <br/>
@@ -42,22 +41,22 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-  
-              <div *ngIf="articleTags">  
+
+              <div *ngIf="articleTags">
                 <span class="display-5">Selected tags:</span>
                 <span *ngFor="let atag of articleTags">
                   {{atag?.Value}},
                 </span>
               </div>
-  
+
             </div>
             </mat-card-content>
-  
+
             <mat-card-actions>
                 <button type = "button" (click)="addTag(articleForm)" mat-raised-button color="primary">Add tag</button>
                 <button type="button" mat-raised-button color="warn" (click)="removeTag(articleForm)">Remove tag</button>
                 <br/><br/><br/>
-                <button type="button" (click)="createArticle(articleForm)" mat-raised-button color="primary" [disabled]="!articleForm.valid">OK</button>
+                <button type="button" (click)="performAction(articleForm)" mat-raised-button color="primary" [disabled]="!articleForm.valid">OK</button>
                 <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
             </mat-card-actions>
           </form>
@@ -94,4 +93,4 @@
 
 
 
- 
+

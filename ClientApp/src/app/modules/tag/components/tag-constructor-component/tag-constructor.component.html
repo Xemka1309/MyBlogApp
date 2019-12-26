@@ -16,7 +16,7 @@
           </mat-card-content>
           <br/><br/>
           <mat-card-actions>
-              <button type="button" (click)="performAction(tagForm)" mat-raised-button color="primary" [disabled]="!tagForm.valid">Create</button>
+              <button type="button" (click)="performAction(tagForm)" mat-raised-button color="primary" [disabled]="!tagForm.valid">{{constructorMode}}</button>
               <button type="submit" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
           </mat-card-actions>
         </form>
@@ -41,10 +41,9 @@
         <button type="button" mat-raised-button color="warn" [disabled]="!controlForm.valid" (click)="selectDeleteTag(controlForm)">Delete</button>
         <button type="button" mat-raised-button color="primary"(click)="selectAddTag(controlForm)">New</button>
     </mat-card-actions>
-      
+
     </mat-card>
-    
+
 
   </mat-tab>
 </mat-tab-group>
-  

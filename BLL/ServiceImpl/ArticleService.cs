@@ -1,10 +1,9 @@
 ﻿using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using MyBlogApp.DAL.Entity.Infrastructure;
 using MyBlogApp.DAL;
 using MyBlogApp.BLL.Exceptions;
+using MyBlogApp.DAL.Exceptions;
 namespace MyBlogApp.BLL.ServiceImpl
 {
     public class ArticleService : IArticleService
@@ -19,18 +18,43 @@ namespace MyBlogApp.BLL.ServiceImpl
         {
             if (article == null)
                 throw new ServiceNullArgumentException("article argument was null");
-            daoFactory.GetArticleRepo().AddArticle(article);
+            try
+            {
+                daoFactory.GetArticleRepo().AddArticle(article);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public Article GetArticle(int id)
         {
-            return daoFactory.GetArticleRepo().GetArticle(id);
+            try
+            {
+                return daoFactory.GetArticleRepo().GetArticle(id);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
-        {   if (parameters == null)
+        {   
+            if (parameters == null)
                 throw new ServiceNullArgumentException("articlequeryparams was null");
-            return daoFactory.GetArticleRepo().GetArticles(parameters);
+            try
+            {
+                return daoFactory.GetArticleRepo().GetArticles(parameters);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public void RemoveArticle(int id)
@@ -39,9 +63,9 @@ namespace MyBlogApp.BLL.ServiceImpl
             {
                 daoFactory.GetArticleRepo().RemoveArticle(id);
             }
-            catch (Exception ex)
+            catch (DALException ex)
             {
-                throw new Exception("error with dal layer");
+                throw new ServiceException($"DAL exception : {ex.Message}");
             }
             
         }
@@ -50,18 +74,28 @@ namespace MyBlogApp.BLL.ServiceImpl
         {
             if (article == null)
                 return;
-            daoFactory.GetArticleRepo().RemoveArticle(article.Id);
-        }
-        public IEnumerable<Article> GetArticlesFiltered(String filterStr)
-        {
-            if (filterStr == null)
-                throw new ServiceNullArgumentException("filterstring was null");
-            return daoFactory.GetArticleRepo().GetArticlesFiltered(filterStr);
+            try
+            {
+                daoFactory.GetArticleRepo().RemoveArticle(article.Id);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public void EditArticle(int id, Article newArticle)
         {
-            daoFactory.GetArticleRepo().EditArticle(id, newArticle);
+            try
+            {
+                daoFactory.GetArticleRepo().EditArticle(id, newArticle);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
     }
 }

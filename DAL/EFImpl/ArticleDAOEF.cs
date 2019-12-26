@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.Entity;
 using MyBlogApp.DAL.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MyBlogApp.DAL.Entity.Infrastructure;
 
 namespace MyBlogApp.DAL.EFImpl
 {
@@ -21,25 +19,35 @@ namespace MyBlogApp.DAL.EFImpl
         public void AddArticle(Article article)
         {
             if (article == null)
-                throw new NullArgumentDALException("article argument was null");
+                throw new NullArgumentDALException("Article argument was null");
+
             if (article.ArticleTags == null)
                 article.ArticleTags = new List<ArticleTag>();
-            if (article.PublishTime == null)
-                article.PublishTime = DateTime.Now;
 
             article.PublishTime = DateTime.Now;
             dbContext.Articles.Add(article);
             dbContext.Attach<Category>(article.Category);
-            dbContext.SaveChanges();
-        }
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Error while updating db {ex.Message}");
+            }
 
+        }
         public void EditArticle(int oldArticleId, Article newArticle)
         {
-            var article = dbContext.Articles.Where(a => a.Id == oldArticleId).Include(a => a.ArticleTags).FirstOrDefault();
+            if (newArticle == null)
+                throw new NullArgumentDALException("New article was null");
+            var article = dbContext.Articles.Where(a => a.Id == oldArticleId).Include(a => a.ArticleTags).First();
+            if (article == null)
+                throw new DALException($"Can't find article with id:{oldArticleId}");
+
             article.Category = newArticle.Category;
             article.Content = newArticle.Content;
             article.Description = newArticle.Description;
-            //article.ArticleTags = newArticle.ArticleTags;
             article.Title = newArticle.Title;
             article.PicsUrl = newArticle.PicsUrl;
             
@@ -54,31 +62,37 @@ namespace MyBlogApp.DAL.EFImpl
             else
             {
                 article.ArticleTags = null;
-                dbContext.SaveChanges();
+                try
+                {
+                    dbContext.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw new DALException($"Error while updating article {ex.Message}");
+                }
                 article.ArticleTags = newArticle.ArticleTags;
             }
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Error while updating article {ex.Message}");
+            }
         }
 
         public Article GetArticle(int id)
         {
-            return dbContext.Articles.Where(a => a.Id == id).FirstOrDefault();
-        }
-        public IEnumerable<Article> GetArticlesFiltered(String filterStr)
-        {
-
-            return null;
-        }
-
-        public String[] GetArticleTagsId(Article article)
-        {
-            var result = new StringBuilder(30);
-            foreach (var tag in article.ArticleTags)
+            try
             {
-                result.Append(tag.TagId);
-                result.Append(' ');
+                return dbContext.Articles.Where(a => a.Id == id).First();
             }
-            return result.ToString().TrimEnd().Split(' ');
+            catch
+            {
+                throw new DALException("Can't get article");
+            }
+            
         }
         public PagedList<Article> GetArticles(ArticleQueryParameters parameters)
         {
@@ -88,14 +102,21 @@ namespace MyBlogApp.DAL.EFImpl
                 TimeSpan diff = date.ToUniversalTime() - origin;
                 return Math.Floor(diff.TotalMilliseconds);
             }
+            IEnumerable<Article> articles = null;
+            try
+            {
+                articles = dbContext.Articles.Include(a => a.Category).Include(a => a.ArticleTags);
+            }
+            catch
+            {
+                throw new DALException("Can't get articles");
+            }
 
-            IEnumerable<Article> articles = dbContext.Articles.Include(a => a.Category).Include(a => a.ArticleTags);
             if (parameters.CategoryId != -1)
                 articles = articles.Where(a => a.Category.Id == parameters.CategoryId);
    
             if (parameters.TitleContains?.Length != 0)
                 articles = articles.Where(a => a.Title.Contains(parameters.TitleContains));
-
 
             if (parameters.MaxDate != 1)
             {
@@ -146,12 +167,12 @@ namespace MyBlogApp.DAL.EFImpl
 
         public void RemoveArticle(Article article)
         {
+            dbContext.Articles.Remove(article);
             try
             {
-                dbContext.Articles.Remove(article);
                 dbContext.SaveChanges();
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 throw new DALException("Can't delete article" + ex.Message);
             }

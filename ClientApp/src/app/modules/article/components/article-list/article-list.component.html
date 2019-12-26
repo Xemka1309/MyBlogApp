@@ -1,62 +1,62 @@
-<h2><a name = "#top">Latest Articles</a></h2>
+<h2><a name="#top">Latest Articles</a></h2>
 <div class="filter-bar">
-    <h3>Filter bar</h3>
-    <form [formGroup]="filterForm" autocomplete="off" novalidate  >
-        <mat-form-field *ngIf="categories">
-            <mat-select placeholder="Select Category" formControlName="categoryId">
-              <mat-option *ngFor="let categoryItem of categories"  [value]="categoryItem.Id">
-                {{categoryItem.Name}}
-              </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <br/>
+  <h3>Filter bar</h3>
+  <form [formGroup]="filterForm" autocomplete="off" novalidate>
+    <mat-form-field *ngIf="categories">
+      <mat-select placeholder="Select Category" formControlName="categoryId">
+        <mat-option *ngFor="let categoryItem of categories" [value]="categoryItem.Id">
+          {{categoryItem.Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br />
 
 
-        <mat-form-field>
-            <input matInput [matDatepicker]="pickerStart" formControlName = "startDate" placeholder="Choose a start date">
-            <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-            <mat-datepicker #pickerStart></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput  [matDatepicker]="pickerEnd" formControlName="endDate" placeholder="Choose an end date">
-            <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-            <mat-datepicker #pickerEnd></mat-datepicker>
-        </mat-form-field>
-        <br/>     
-        <span *ngIf = "invalidDatePicked">End date can't be less than start date </span>
-        
-        <span *ngIf="selectedTags" class="selected-tags display-4">
-            <span>Selected tags:</span>
-            <span *ngFor ="let tagItem of selectedTags">
-                {{tagItem.Value}},
-            </span>
-        </span>
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerStart" formControlName="startDate" placeholder="Choose a start date">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerEnd" formControlName="endDate" placeholder="Choose an end date">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+    <br />
+    <span *ngIf="invalidDatePicked">End date can't be less than start date </span>
 
-        <br/>
-        <mat-form-field *ngIf="tags">
-            <mat-select placeholder="Select Tag/Tags" formControlName="tagId">
-              <mat-option *ngFor="let tagItem of tags"  [value]="tagItem.Id">
-                {{tagItem.Value}}
-              </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <br/>
-        <button mat-button mat-raised-button color="warn" (click)="selectTag()" type="button">Select tag</button>
-        <button mat-button mat-raised-button color="warn" (click)="unselectTag()" type="button">Unselect tag</button>
-        <br/><br/>
+    <span *ngIf="selectedTags" class="selected-tags display-4">
+      <span>Selected tags:</span>
+      <span *ngFor="let tagItem of selectedTags">
+        {{tagItem.Value}},
+      </span>
+    </span>
 
-        <button mat-button mat-raised-button color="primary" (click)="filter()" type="button">Filter</button>
-    </form>
-    
-<div *ngIf="!hasArticles">
+    <br />
+    <mat-form-field *ngIf="tags">
+      <mat-select placeholder="Select Tag/Tags" formControlName="tagId">
+        <mat-option *ngFor="let tagItem of tags" [value]="tagItem.Id">
+          {{tagItem.Value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br />
+    <button mat-button mat-raised-button color="warn" (click)="selectTag()" type="button">Select tag</button>
+    <button mat-button mat-raised-button color="warn" (click)="unselectTag()" type="button">Unselect tag</button>
+    <br /><br />
+
+    <button mat-button mat-raised-button color="primary" (click)="filter()" type="button">Filter</button>
+  </form>
+
+  <div *ngIf="!hasArticles">
     <h3 class="display-3">No articles to current filter</h3>
-</div>    
-      
+  </div>
+
 </div>
 <div *ngFor="let item of articles; let i=index" class="article-container">
-    <article-item [article] = "item"  ></article-item>
+  <article-item [article]="item"></article-item>
 </div>
 <div class="paginator-container">
-    <button mat-raised-button  type="button" (click)="prevPage()" mat-button>Prev page</button>
-    <button mat-raised-button  type="button" (click)="nextPage()" mat-button>Next page</button>
+  <button mat-raised-button type="button" (click)="prevPage()" mat-button>Prev page</button>
+  <button mat-raised-button type="button" (click)="nextPage()" mat-button>Next page</button>
 </div>

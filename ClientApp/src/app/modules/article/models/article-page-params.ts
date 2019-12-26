@@ -4,6 +4,6 @@ export class ArticlePageParams{
     pageSize:number;
     pageNumber:number;
     Tags:String = "";
-    MinDate:number;
-    MaxDate:number;
+    MinDate:number = 0;
+    MaxDate:number = 1;
 }

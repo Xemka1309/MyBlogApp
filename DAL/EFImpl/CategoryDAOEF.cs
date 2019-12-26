@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyBlogApp.DAL.DAOInterfaces;
@@ -18,31 +17,60 @@ namespace MyBlogApp.DAL.EFImpl
         {
             if (category == null)
                 throw new NullArgumentDALException("Category was null");
-
-
             dbContext.Categories.Add(category);
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Can't add category {ex.Message}");
+            }
         }
 
         public void EditCategory(int id, Category newCategory)
         {
-            var oldCategory = dbContext.Categories.Where(c => c.Id == id).FirstOrDefault();
+            if (newCategory == null)
+                throw new NullArgumentDALException("New category wass null");
+            var oldCategory = dbContext.Categories.Where(c => c.Id == id).First();
+            if (oldCategory == null)
+                throw new DALException($"Can't find category with id {id}");
             oldCategory.Name = newCategory.Name;
             oldCategory.Description = newCategory.Description;
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Can't edit category {ex.Message}");
+            }
         }
 
         public IEnumerable<Category> GetCategories()
         {
-            if (dbContext.Categories != null)
-                return dbContext.Categories.ToArrayAsync().Result;
-            else
-                return new Category[0];
+            try
+            {
+                return dbContext.Categories;
+            }
+            catch
+            {
+                throw new DALException("Can't get categories");
+            }
+            
         }
 
         public Category GetCategory(int id)
         {
-            return dbContext.Categories.Where(c => c.Id == id).FirstOrDefault();
+            try
+            {
+                return dbContext.Categories.Where(c => c.Id == id).FirstOrDefault();
+            }
+            catch
+            {
+                throw new DALException($"Can't get category with id:{id}");
+            }
+            
         }
 
         public void RemoveCategory(int id)
@@ -53,7 +81,14 @@ namespace MyBlogApp.DAL.EFImpl
         public void RemoveCategory(Category category)
         {
             dbContext.Categories.Remove(category);
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Can't remove category {ex.Message}");
+            }
         }
     }
 }

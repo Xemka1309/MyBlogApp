@@ -1,6 +1,5 @@
 ﻿using MyBlogApp.DAL.Entity;
-using System;
-using System.Collections.Generic;
+using MyBlogApp.DAL.Entity.Infrastructure;
 namespace MyBlogApp.DAL.DAOInterfaces
 {
     public interface IArticleRepo
@@ -10,6 +9,5 @@ namespace MyBlogApp.DAL.DAOInterfaces
         Article GetArticle(int id);
         void RemoveArticle(int id);
         void EditArticle(int oldArticleId, Article newArticle);
-        IEnumerable<Article> GetArticlesFiltered(String filterStr);
     }
 }

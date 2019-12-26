@@ -38,10 +38,10 @@ import { ArticleViewerComponent } from './modules/article/components/article-vie
     RouterModule.forRoot([
       { path: '', component: ArticleListComponent, pathMatch: 'full' },
       { path: 'category', component: CategoryConstructorComponent},
-      { path: 'article-item', component:ArticleListComponent },
-      { path: 'article-constructor', component:ArticleConstructorComponent},
-      { path: 'tag-constructor', component:TagConstructorComponent },
-      { path: 'article', component:ArticleViewerComponent}
+      { path: 'article-item', component: ArticleListComponent },
+      { path: 'article-constructor', component: ArticleConstructorComponent},
+      { path: 'tag-constructor', component: TagConstructorComponent },
+      { path: 'article', component: ArticleViewerComponent},
     ]),
     BrowserAnimationsModule
   ],

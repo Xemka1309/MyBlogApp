@@ -1,4 +1,4 @@
-import {Component, OnInit,Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../../models/article';
 import { ArticleService } from 'src/app/services/article-service';
 import { Router } from '@angular/router';
@@ -11,22 +11,22 @@ import { Tag } from 'src/app/modules/tag/models/tag';
   styleUrls: ['article-viewer.component.css'],
 })
 export class ArticleViewerComponent implements OnInit {
-    public url:String = "https://localhost:44382/article-constructor";
-    public article:Article;
-    public articleTags:Tag[];
-    constructor(private articleService: ArticleService, private router: Router, private tagService:TagService){
-        
-    }
-    ngOnInit(): void {
-      this.article = this.articleService.getCurrent();
-      this.tagService.getTagsOfArticle(this.article.Id).subscribe(result => {
-        this.articleTags = result;
-      })
-      console.log(this.article);
-      console.log(this.articleTags);
-    
-    }
-    articleClick(){
-    }
-  
+  public url: String = 'https://localhost:44382/article-constructor';
+  public article: Article;
+  public articleTags: Tag[];
+  constructor(private articleService: ArticleService, private router: Router, private tagService: TagService) {
+
+  }
+  ngOnInit(): void {
+    this.article = this.articleService.getCurrent();
+    this.tagService.getTagsOfArticle(this.article.Id).subscribe(result => {
+      this.articleTags = result;
+    });
+    console.log(this.article);
+    console.log(this.articleTags);
+
+  }
+  articleClick() {
+  }
+
 }

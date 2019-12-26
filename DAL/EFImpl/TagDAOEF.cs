@@ -1,9 +1,7 @@
 ﻿using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MyBlogApp.DAL.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,24 +19,57 @@ namespace MyBlogApp.DAL.EFImpl
             if (tag == null)
                 throw new NullArgumentDALException("Tag was null");
             dbContext.Tags.Add(tag);
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Can't add tag {ex.Message}");
+            }
         }
 
         public void EditTag(int id, Tag newTag)
         {
+            if (newTag == null)
+                throw new NullArgumentDALException("New tag was null");
             var oldTag = GetTag(id);
             oldTag.Value = newTag.Value;
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.Tags.Update(oldTag);
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Can't edit tag {ex.Message}");
+            }
         }
 
         public Tag GetTag(int id)
         {
-            return dbContext.Tags.Where(t => t.Id == id).FirstOrDefault();
+            try
+            {
+                return dbContext.Tags.Where(t => t.Id == id).First();
+            }
+            catch
+            {
+                throw new DALException("Can't get tag");
+            }
+            
         }
 
         public IEnumerable<Tag> GetTags()
         {
-            return dbContext.Tags;
+            try
+            {
+                return dbContext.Tags;
+            }
+            catch
+            {
+                throw new DALException("Can't get tags");
+            }
+            
         }
 
         public IEnumerable<Tag> GetTagsOfArticle(int articleId)
@@ -59,6 +90,14 @@ namespace MyBlogApp.DAL.EFImpl
         public void RemoveTag(Tag tag)
         {
             dbContext.Tags.Remove(tag);
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DALException($"Can't remove tag {ex.Message}");
+            }
         }
 
         public void RemoveTag(int id)

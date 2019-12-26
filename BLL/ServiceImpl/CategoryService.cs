@@ -1,11 +1,9 @@
 ﻿using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.DAOInterfaces;
 using MyBlogApp.DAL.Entity;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MyBlogApp.BLL.Exceptions;
+using MyBlogApp.DAL.Exceptions;
 namespace MyBlogApp.BLL.ServiceImpl
 {
     public class CategoryService : ICategoryService
@@ -19,32 +17,70 @@ namespace MyBlogApp.BLL.ServiceImpl
         {
             if (category == null)
                 throw new ServiceNullArgumentException("Category was null");
-
-            categoryRepo.AddCategory(category);
+            try
+            {
+                categoryRepo.AddCategory(category);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public void EditCategory(int id, Category newCategory)
         {
             if (newCategory == null)
                 throw new ServiceNullArgumentException("category was null");
+            try
+            {
+                categoryRepo.EditCategory(id, newCategory);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
             
-            categoryRepo.EditCategory(id, newCategory);
 
         }
 
         public IEnumerable<Category> GetCategories()
         {
-            return categoryRepo.GetCategories();
+            try
+            {
+                return categoryRepo.GetCategories();
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public Category GetCategory(int id)
         {
-            return categoryRepo.GetCategory(id);
+            try
+            {
+                return categoryRepo.GetCategory(id);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
 
         public void RemoveCategory(int id)
         {
-            categoryRepo.RemoveCategory(id);
+            try
+            {
+                categoryRepo.RemoveCategory(id);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException($"DAL exception : {ex.Message}");
+            }
+            
         }
     }
 }

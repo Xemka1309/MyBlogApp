@@ -1,23 +1,23 @@
 <mat-card class="article-card">
-    <mat-card-header>
-      <div mat-card-avatar class="article-header-image"></div>
-      <mat-card-title>{{article?.Title}}</mat-card-title>
-      <mat-card-subtitle>{{article?.Category.Name}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        {{article?.Description}}
-      </p>
-      <p>
-          {{article?.Content}}
-      </p>
-    </mat-card-content>
-    <mat-card-footer>
-        <span class="display-5">Tags:</span><br/>
-        <span *ngFor="let tagItem of articleTags">
-            {{tagItem.Value}},
-        </span>
-    </mat-card-footer>
+  <mat-card-header>
+    <div mat-card-avatar class="article-header-image"></div>
+    <mat-card-title>{{article?.Title}}</mat-card-title>
+    <mat-card-subtitle>{{article?.Category.Name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{article?.Description}}
+    </p>
+    <p>
+      {{article?.Content}}
+    </p>
+  </mat-card-content>
+  <mat-card-footer>
+    <span class="display-5">Tags:</span><br />
+    <span *ngFor="let tagItem of articleTags">
+      {{tagItem.Value}},
+    </span>
+  </mat-card-footer>
 
-    <img mat-card-image [src]="article?.PicsUrl">
-  </mat-card>
+  <img mat-card-image [src]="article?.PicsUrl">
+</mat-card>

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyBlogApp.BLL.Interfaces;
 using MyBlogApp.DAL.Entity;
 using Newtonsoft.Json;
+using MyBlogApp.BLL.Exceptions;
 
 namespace MyBlogApp.Controllers
 {
@@ -27,7 +23,16 @@ namespace MyBlogApp.Controllers
         [HttpGet]
         public IActionResult GetCategories()
         {
-            return Ok(JsonConvert.SerializeObject(categoryService.GetCategories()));
+            try
+            {
+                return Ok(JsonConvert.SerializeObject(categoryService.GetCategories()));
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
+            }
+            
         }
 
         
@@ -35,49 +40,72 @@ namespace MyBlogApp.Controllers
         [HttpPost]
         public IActionResult AddCategory([FromBody] Category category) 
         {
-            logger.LogDebug("Accept POST category");
             if (category == null)
             {
-                logger.LogInformation("Bad request accepted");
-                return BadRequest("Invalid body (invalid category object)");
+                return BadRequest(JsonConvert.SerializeObject("Invalid body (invalid category object)"));
             }
-                
 
-            categoryService.AddCategory(category);
-            logger.LogInformation($"Category with name: {category.Name} was added");
-            return Ok("Category was added");
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        [HttpPut]
-        public IActionResult EditCategory([FromQuery] int id, [FromBody] Category category)
-        {
-            if (category == null)
-                return BadRequest("Category was null");
             try
             {
-                categoryService.EditCategory(id, category);
-                return Ok($"Tag with id:{id} was edited");
+                categoryService.AddCategory(category);
+                return Ok(JsonConvert.SerializeObject("Category was added"));
             }
-            catch
+            catch (ServiceException ex)
             {
-                return BadRequest("Can't perform editing");
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
             }
             
         }
 
+        [Authorize]
+        [HttpPut]
+        public IActionResult EditCategory([FromQuery] int id, [FromBody] Category category)
+        {
+            if (category == null)
+                return BadRequest(JsonConvert.SerializeObject("Category was null"));
+
+            if (categoryService.GetCategory(id) == null)
+                return BadRequest(JsonConvert.SerializeObject("Category does not exists"));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                categoryService.EditCategory(id, category);
+                return Ok(JsonConvert.SerializeObject($"Tag with id:{id} was edited"));
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
+            }
+
+        }
+
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteCategory([FromQuery] int id)
         {
             try
             {
                 categoryService.RemoveCategory(id);
-                return Ok("Delete ok");
+                return Ok(JsonConvert.SerializeObject("Delete ok"));
             }
-            catch
+            catch (ServiceException ex)
             {
-                return BadRequest("Can't perform delete");
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error"));
             }
-            
+
         }
     }
 }
