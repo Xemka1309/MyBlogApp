@@ -20,12 +20,14 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MyDialogModule } from '../dialogs/dialogs.module';
+import { ArticleCommentryItemComponent } from './components/article-comment-item/article-comment.component';
 @NgModule({
   declarations: [
     ArticleConstructorComponent,
     ArticleItemComponent,
     ArticleListComponent,
     ArticleViewerComponent,
+    ArticleCommentryItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,11 @@ import { MyDialogModule } from '../dialogs/dialogs.module';
     MyDialogModule
   ],
   providers: [],
-  exports: [ArticleConstructorComponent,ArticleItemComponent,ArticleListComponent,ArticleViewerComponent]
+  exports: [ArticleConstructorComponent,
+    ArticleItemComponent,
+    ArticleListComponent,
+    ArticleViewerComponent,
+    ArticleCommentryItemComponent]
 })
 
 export class ArticleModule {

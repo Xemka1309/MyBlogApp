@@ -21,5 +21,7 @@ namespace MyBlogApp.DAL.Entity
 
         [Required(ErrorMessage = "Article must be part of some category")]
         public Category Category { get; set; }
+        public int Rating { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
