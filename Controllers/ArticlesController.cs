@@ -75,7 +75,44 @@ namespace MyBlogApp.Controllers
                 logger.LogError(ex.Message);
                 return BadRequest(JsonConvert.SerializeObject("Server error"));
             }
-            return Ok(article);
+            return Ok(JsonConvert.SerializeObject(article));
+        }
+
+        [Route("comments")]
+        [HttpGet]
+        public IActionResult GetComments([FromQuery] int articleId)
+        {
+            if (articleService.GetArticle(articleId) == null)
+                return BadRequest(JsonConvert.SerializeObject("article does not exists"));
+            try
+            {
+                var comments = articleService.GetComments(articleId);
+                return Ok(JsonConvert.SerializeObject(comments));
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error" + ex.Message));
+            }
+        }
+
+        [Route("comments")]
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddComment([FromQuery] int articleId, [FromBody] ArticleComment comment)
+        {
+            if (articleService.GetArticle(articleId) == null)
+                return BadRequest(JsonConvert.SerializeObject("article does not exists"));
+            try
+            {
+                articleService.AddComment(articleId, comment);
+                return Ok(comment);
+            }
+            catch (ServiceException ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject("Server error" + ex.Message));
+            }
         }
 
         [Authorize]

@@ -37,6 +37,35 @@ namespace MyBlogApp.DAL.EFImpl
             }
 
         }
+        public List<ArticleComment> GetComments(int articleId)
+        {
+            try
+            {
+                return dbContext.Comments.Where(comment => comment.ArticleId == articleId).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new DALException("Can't get comments" + ex.Message);
+            }
+        }
+        public void AddComment(int articleId, ArticleComment comment)
+        {
+            if (GetArticle(articleId) == null)
+            {
+                throw new DALException("article does not exists");
+            }
+            comment.ArticleId = articleId;
+            dbContext.Comments.Add(comment);
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch
+            {
+                throw new DALException("Can't add comment");
+            }
+        }
+
         public void EditArticle(int oldArticleId, Article newArticle)
         {
             if (newArticle == null)
@@ -45,12 +74,12 @@ namespace MyBlogApp.DAL.EFImpl
             if (article == null)
                 throw new DALException($"Can't find article with id:{oldArticleId}");
 
-            article.Category = newArticle.Category;
-            article.Content = newArticle.Content;
-            article.Description = newArticle.Description;
-            article.Title = newArticle.Title;
-            article.PicsUrl = newArticle.PicsUrl;
-            
+            article.Category = newArticle.Category != null ? newArticle.Category : article.Category;
+            article.Content = newArticle.Content != null ? newArticle.Content : article.Content;
+            article.Description = newArticle.Description != null ? newArticle.Description : article.Description;
+            article.Title = newArticle.Title != null ? newArticle.Title : article.Title;
+            article.PicsUrl = newArticle.PicsUrl != null ? newArticle.PicsUrl : article.PicsUrl;
+
             newArticle.Id = oldArticleId;
             if (article.ArticleTags == newArticle.ArticleTags)
             {
@@ -164,6 +193,8 @@ namespace MyBlogApp.DAL.EFImpl
                 parameters.PageNumber,
                 parameters.PageSize);
         }
+
+        
 
         public void RemoveArticle(Article article)
         {

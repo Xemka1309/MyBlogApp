@@ -3,9 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyBlogApp.DAL.Entity
 {
-    public class Comment
+    public class ArticleComment
     {
         public int Id { get; set; }
+
+        public int ArticleId { get; set; }
 
         [Required(ErrorMessage = "Comment must contain text")]
         public string Text { get; set; }

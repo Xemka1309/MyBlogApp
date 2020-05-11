@@ -4,6 +4,8 @@ using MyBlogApp.DAL.Entity.Infrastructure;
 using MyBlogApp.DAL;
 using MyBlogApp.BLL.Exceptions;
 using MyBlogApp.DAL.Exceptions;
+using System.Collections.Generic;
+
 namespace MyBlogApp.BLL.ServiceImpl
 {
     public class ArticleService : IArticleService
@@ -96,6 +98,30 @@ namespace MyBlogApp.BLL.ServiceImpl
                 throw new ServiceException($"DAL exception : {ex.Message}");
             }
             
+        }
+
+        public List<ArticleComment> GetComments(int articleId)
+        {
+            try
+            {
+                return daoFactory.GetArticleRepo().GetComments(articleId);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException("Error when getting comments" + ex.Message);
+            }
+        }
+
+        public void AddComment(int articleId, ArticleComment comemnt)
+        {
+            try
+            {
+                daoFactory.GetArticleRepo().AddComment(articleId, comemnt);
+            }
+            catch (DALException ex)
+            {
+                throw new ServiceException("Can't add comment" + ex.Message);
+            }
         }
     }
 }

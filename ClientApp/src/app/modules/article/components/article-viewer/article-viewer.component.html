@@ -13,6 +13,17 @@
     </p>
   </mat-card-content>
   <mat-card-footer>
+
+    <div>
+      <input matInput placeholder="Text" [(value)]="commentText">
+      <button (click)="addComment()" mat-button>Add comment</button>
+    </div>
+    <div class="comments" *ngIf="comments">
+      <div class="comments-container" *ngFor="let item of comments">
+        <article-comment-item [comment] = "item"></article-comment-item>
+      </div>
+    </div>
+
     <span class="display-5">Tags:</span><br />
     <span *ngFor="let tagItem of articleTags">
       {{tagItem.Value}},

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Comment } from '../../models/article-commentary';
+import { ArticleComment } from '../../models/article-commentary';
 import { CommentaryService } from 'src/app/services/commentary-service';
 
 @Component({
@@ -10,7 +10,7 @@ import { CommentaryService } from 'src/app/services/commentary-service';
 export class ArticleCommentryItemComponent implements OnInit {
 
   @Input()
-  private comment: Comment;
+  private comment: ArticleComment;
   constructor(private commentaryService: CommentaryService) {
 
   }

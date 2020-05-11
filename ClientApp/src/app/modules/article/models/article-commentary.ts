@@ -1,5 +1,6 @@
-export class Comment {
+export class ArticleComment {
   public Id: number;
-  public Author: String;
+  public ArticleId: number;
   public Text: String;
+  public Author: String;
 }

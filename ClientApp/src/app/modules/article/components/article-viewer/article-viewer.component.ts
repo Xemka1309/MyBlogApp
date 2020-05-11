@@ -4,6 +4,8 @@ import { ArticleService } from 'src/app/services/article-service';
 import { Router } from '@angular/router';
 import { TagService } from 'src/app/services/tag-service';
 import { Tag } from 'src/app/modules/tag/models/tag';
+import { CommentaryService } from 'src/app/services/commentary-service';
+import { ArticleComment } from '../../models/article-commentary';
 
 @Component({
   selector: 'article-viewer',
@@ -14,7 +16,12 @@ export class ArticleViewerComponent implements OnInit {
   public url: String = 'https://localhost:44382/article-constructor';
   public article: Article;
   public articleTags: Tag[];
-  constructor(private articleService: ArticleService, private router: Router, private tagService: TagService) {
+  public comments: ArticleComment[];
+  public commentText: String = '';
+  constructor(private articleService: ArticleService,
+              private router: Router,
+              private tagService: TagService,
+              private commentService: CommentaryService) {
 
   }
   ngOnInit(): void {
@@ -22,11 +29,29 @@ export class ArticleViewerComponent implements OnInit {
     this.tagService.getTagsOfArticle(this.article.Id).subscribe(result => {
       this.articleTags = result;
     });
-    console.log(this.article);
-    console.log(this.articleTags);
+    this.commentService.getCommentariesToArticle(this.article.Id).subscribe(result => {
+      this.comments = result;
+    });
+    //console.log(this.article);
+    //console.log(this.articleTags);
 
   }
-  articleClick() {
+  public articleClick() {
+  }
+
+  public addComment() {
+    const comment = new ArticleComment();
+    comment.Text = this.commentText;
+    comment.ArticleId = this.article.Id;
+    comment.Author = "Author";
+    comment.Text = "Text";
+    this.commentService.addComment(comment, this.article.Id).subscribe(result => {
+      this.commentService.getCommentariesToArticle(this.article.Id).subscribe(result => {
+        this.comments = result;
+        console.log(result);
+      });
+    });
+
   }
 
 }

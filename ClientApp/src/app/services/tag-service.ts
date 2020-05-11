@@ -43,6 +43,6 @@ export class TagService {
     if (isNaN(articleId)) {
       return;
     }
-    return this.http.get<Tag[]>(this.base + 'tagsOFarticle?articleId=' + articleId.toString());
+    return this.http.get<Tag[]>(this.base + '/tagsOFarticle?articleId=' + articleId.toString());
   }
 }

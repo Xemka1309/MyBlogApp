@@ -4,14 +4,13 @@ import { ArticleTag } from './article-tag';
 
 export class Article {
     Id: number;
+  Publish4Time: Date;
     Title: String;
     Description: String;
-    Content: String;
-    Category: Category;
     PicsUrl: String;
-    Publish4Time: Date;
+    Content: String;
     ArticleTags: ArticleTag[];
-    Comments: Comment[];
+    Category: Category;
     Rating: number;
     constructor() {
         this.ArticleTags = [];
@@ -20,8 +19,6 @@ export class Article {
         this.Publish4Time = null;
         this.PicsUrl = '';
         this.Rating = 0;
-        this.Comments = [];
-
     }
     static cloneBase(base: Article): Article {
         const result = new Article();
@@ -29,7 +26,6 @@ export class Article {
         result.Description = base.Description;
         result.Content = base.Content;
         result.Rating = base.Rating;
-        result.Comments = base.Comments;
         if (base.ArticleTags == null) {
             return result;
         }
